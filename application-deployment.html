@@ -1,0 +1,430 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Application deployment - go4clouds Kubernetes Tutorial</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="**go4clouds** is open source Kubernetes tutorial for application developers">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="kubernetes-introduction.html"><strong aria-hidden="true">2.</strong> Kubernetes introduction</a></li><li class="chapter-item expanded "><a href="cluster-overview.html"><strong aria-hidden="true">3.</strong> Cluster overview</a></li><li class="chapter-item expanded "><a href="pods-operations.html"><strong aria-hidden="true">4.</strong> Pods operations</a></li><li class="chapter-item expanded "><a href="advanced-pods.html"><strong aria-hidden="true">5.</strong> Advanced pods</a></li><li class="chapter-item expanded "><a href="application-deployment.html" class="active"><strong aria-hidden="true">6.</strong> Application deployment</a></li><li class="chapter-item expanded "><a href="using-configmaps-and-secrets.html"><strong aria-hidden="true">7.</strong> ConfigMaps and Secrets</a></li><li class="chapter-item expanded "><a href="persistent-volume.html"><strong aria-hidden="true">8.</strong> Persistent Volume</a></li><li class="chapter-item expanded "><a href="service-concept.html"><strong aria-hidden="true">9.</strong> Service concept</a></li><li class="chapter-item expanded "><a href="ingress-controller.html"><strong aria-hidden="true">10.</strong> Ingress controller</a></li><li class="chapter-item expanded "><a href="loadbalancer-installation.html"><strong aria-hidden="true">11.</strong> LoadBalancer installation</a></li><li class="chapter-item expanded "><a href="getting-highavailable.html"><strong aria-hidden="true">12.</strong> Getting High-Available</a></li><li class="chapter-item expanded "><a href="kubernetes-cni.html"><strong aria-hidden="true">13.</strong> Kubernetes CNI</a></li><li class="chapter-item expanded "><a href="network-policy.html"><strong aria-hidden="true">14.</strong> Network policy</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">go4clouds Kubernetes Tutorial</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/go4clouds/docs" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="lab-exercises-for-application-deployment"><a class="header" href="#lab-exercises-for-application-deployment">Lab Exercises for Application Deployment</a></h1>
+<h2 id="exercise-0---run-application-using-a-deployment"><a class="header" href="#exercise-0---run-application-using-a-deployment">Exercise 0 - <a href="https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/#creating-and-exploring-an-nginx-deployment">Run Application Using a Deployment</a></a></h2>
+<p>Creating and exploring an nginx deployment
+You can run an application by creating a Kubernetes Deployment object, and you can describe a Deployment in a YAML file. For example, this YAML file describes a Deployment that runs the <code>nginx:1.14.2</code> Docker image:</p>
+<pre><code>cat &gt; deployment.yaml &lt;&lt;EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: registry.k8s:5000/nginx:1.14.2
+        ports:
+        - containerPort: 80
+EOF
+</code></pre>
+<p>Create a Deployment based on the YAML file:</p>
+<pre><code class="language-shell">kubectl apply -f https://k8s.io/examples/application/deployment.yaml
+</code></pre>
+<p>Display information about the Deployment:</p>
+<pre><code class="language-shell">kubectl describe deployment nginx-deployment
+</code></pre>
+<p>The output is similar to this:</p>
+<pre><code> Name:     nginx-deployment
+ Namespace:    default
+ CreationTimestamp:  Tue, 30 Aug 2016 18:11:37 -0700
+ Labels:     app=nginx
+ Annotations:    deployment.kubernetes.io/revision=1
+ Selector:   app=nginx
+ Replicas:   2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+ StrategyType:   RollingUpdate
+ MinReadySeconds:  0
+ RollingUpdateStrategy:  1 max unavailable, 1 max surge
+ Pod Template:
+   Labels:       app=nginx
+   Containers:
+    nginx:
+     Image:              nginx:1.14.2
+     Port:               80/TCP
+     Environment:        &lt;none&gt;
+     Mounts:             &lt;none&gt;
+   Volumes:              &lt;none&gt;
+ Conditions:
+   Type          Status  Reason
+   ----          ------  ------
+   Available     True    MinimumReplicasAvailable
+   Progressing   True    NewReplicaSetAvailable
+ OldReplicaSets:   &lt;none&gt;
+ NewReplicaSet:    nginx-deployment-1771418926 (2/2 replicas created)
+ No events.
+</code></pre>
+<p>List the Pods created by the deployment:</p>
+<pre><code class="language-shell"> kubectl get pods -l app=nginx
+</code></pre>
+<p>The output is similar to this:</p>
+<pre><code> NAME                                READY     STATUS    RESTARTS   AGE
+ nginx-deployment-1771418926-7o5ns   1/1       Running   0          16h
+ nginx-deployment-1771418926-r18az   1/1       Running   0          16h
+</code></pre>
+<p>Display information about a Pod:</p>
+<pre><code class="language-shell"> kubectl describe pod &lt;pod-name&gt;
+</code></pre>
+<p>where <pod-name> is the name of one of your Pods.</p>
+<p>Updating the deployment
+You can update the deployment by applying a new YAML file. This YAML file specifies that the deployment should be updated to use nginx 1.16.1.</p>
+<pre><code>cat &gt; deployment-update.yaml &lt;&lt;EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: registry.k8s:5000/nginx:1.16.1 # Update the version of nginx from 1.14.2 to 1.16.1
+        ports:
+        - containerPort: 80
+EOF
+</code></pre>
+<p>Apply the new YAML file:</p>
+<pre><code class="language-shell">  kubectl apply -f https://k8s.io/examples/application/deployment-update.yaml
+</code></pre>
+<p>Watch the deployment create pods with new names and delete the old pods:</p>
+<pre><code class="language-shell">  kubectl get pods -l app=nginx
+</code></pre>
+<p>Scaling the application by increasing the replica count
+You can increase the number of Pods in your Deployment by applying a new YAML file. This YAML file sets replicas to 4, which specifies that the Deployment should have four Pods:</p>
+<pre><code>cat &gt; deployment-scale.yaml &lt;&lt;EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 4 # Update the replicas from 2 to 4
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: registry.k8s:5000/nginx:1.14.2
+        ports:
+        - containerPort: 80
+EOF
+</code></pre>
+<p>Apply the new YAML file:</p>
+<pre><code class="language-shell"> kubectl apply -f https://k8s.io/examples/application/deployment-scale.yaml
+</code></pre>
+<p>Verify that the Deployment has four Pods:</p>
+<pre><code class="language-shell"> kubectl get pods -l app=nginx
+</code></pre>
+<p>The output is similar to this:</p>
+<pre><code> NAME                               READY     STATUS    RESTARTS   AGE
+ nginx-deployment-148880595-4zdqq   1/1       Running   0          25s
+ nginx-deployment-148880595-6zgi1   1/1       Running   0          25s
+ nginx-deployment-148880595-fxcez   1/1       Running   0          2m
+ nginx-deployment-148880595-rwovn   1/1       Running   0          2m
+</code></pre>
+<p>Delete the deployment by name:</p>
+<pre><code class="language-shell">kubectl delete deployment nginx-deployment
+</code></pre>
+<h2 id="exercise-1---testing-rolling-update-deployment"><a class="header" href="#exercise-1---testing-rolling-update-deployment">Exercise 1 - Testing rolling update deployment</a></h2>
+<ul>
+<li>Create test deployment</li>
+</ul>
+<pre><code class="language-shell">kubectl create deployment test --image=registry.k8s:5000/nginx:1.14.2
+</code></pre>
+<ul>
+<li>Check deployment status</li>
+</ul>
+<pre><code class="language-shell">kubectl get deploy,rs,pods
+kubectl rollout history deployment test
+</code></pre>
+<ul>
+<li>Change number of replicas</li>
+</ul>
+<pre><code class="language-shell">kubectl scale deployment test --replicas=3 --record
+</code></pre>
+<ul>
+<li>Check deployment status</li>
+</ul>
+<pre><code class="language-shell">kubectl get deploy,rs,pods
+</code></pre>
+<ul>
+<li>Update deployment</li>
+</ul>
+<pre><code class="language-shell">kubectl set image deployment test nginx=registry.k8s:5000/nginx:1.16.1 --record
+</code></pre>
+<ul>
+<li>Check deployment status </li>
+</ul>
+<pre><code class="language-shell">kubectl get deploy,rs,pods
+</code></pre>
+<ul>
+<li>Check deployment rollout history</li>
+</ul>
+<pre><code class="language-shell">kubectl rollout history --revision=2 deployment test
+</code></pre>
+<ul>
+<li>Change resource limits </li>
+</ul>
+<pre><code class="language-shell">kubectl set resources deployment test --containers=nginx --limits=cpu=200m,memory=512Mi --record
+</code></pre>
+<ul>
+<li>Braking deployment </li>
+</ul>
+<pre><code class="language-shell">kubectl rollout history deployment test
+kubectl set image deployment test nginx=nginx:1.173 --record 
+</code></pre>
+<ul>
+<li>Check the status</li>
+</ul>
+<pre><code class="language-shell">kubectl get deploy,rs,pods
+kubectl rollout status deployment test
+</code></pre>
+<ul>
+<li>Deployment rollback</li>
+</ul>
+<pre><code class="language-shell">kubectl rollout undo deployment test
+</code></pre>
+<h2 id="exercise-2---enable-autoscaling"><a class="header" href="#exercise-2---enable-autoscaling">Exercise 2 - Enable autoscaling</a></h2>
+<ul>
+<li>Update nginx deployment and add resources requests CPU <code>200m</code></li>
+</ul>
+<pre><code class="language-shell">kubectl patch deployment test --type='json' -p='[{&quot;op&quot;:&quot;add&quot;, &quot;path&quot;:&quot;/spec/template/spec/containers/0/resources/requests&quot;, &quot;value&quot;:{&quot;cpu&quot;:&quot;200m&quot;}}]'
+</code></pre>
+<ul>
+<li>Enable Horizontal Pod Autoscaler for <code>test</code> deployment</li>
+</ul>
+<pre><code class="language-shell">kubectl autoscale deployment test --min=1 --max=5 --cpu-percent=60
+</code></pre>
+<ul>
+<li>Check HPA staus</li>
+</ul>
+<pre><code class="language-shell">kubectl get hpa nginx
+</code></pre>
+<p>Output:</p>
+<pre><code>NAME    REFERENCE          TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+nginx   Deployment/nginx   0%/60%    1         5         1          36m
+</code></pre>
+<ul>
+<li>Check HPA event logs</li>
+</ul>
+<pre><code class="language-shell">kubectl describe hpa nginx
+</code></pre>
+<ul>
+<li>Clean up</li>
+</ul>
+<pre><code class="language-shell">kubectl delete deployment test
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="advanced-pods.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="using-configmaps-and-secrets.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="advanced-pods.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="using-configmaps-and-secrets.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
