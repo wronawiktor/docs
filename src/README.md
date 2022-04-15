@@ -1,4 +1,4 @@
-![go4clouds](https://go4clouds.github.io/docs/images/logo-horizontal-go4clouds.png)
+![go4clouds](https://go4clouds.github.io/docs/images/go4clouds-light.png)
 
 # Introduction
 
