@@ -58,6 +58,38 @@ curl http://127.0.0.1:80
 docker tag hello-world ttl.sh/hello-world:8h
 ```
 
+* Push container image to ttl.sh
+
+```
+docker push ttl.sh/hello-world:8h
+```
+
+* Run hello-world container image on Kubernetes
+
+```
+kubectl create namespace hello-world
+kubectl run -n hello-world hello-world --image=ttl.sh/hello-world:8h
+```
+
+* Test this application
+
+```
+kubectl get events -n hello-world
+kubectl get pods -n hello-world
+```
+
+* Open tunnel to pod container
+
+```
+kubectl port-forward -n hello-world pod/hello-world 80:80
+```
+
+* Test web application locally
+
+```
+curl http://127.0.0.1
+```
+
 ## Exercise 1 - Build python Flask application
 
 * Install required packages
