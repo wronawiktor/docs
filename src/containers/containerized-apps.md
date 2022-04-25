@@ -81,13 +81,13 @@ kubectl get pods -n hello-world
 * Open tunnel to pod container
 
 ```
-kubectl port-forward -n hello-world pod/hello-world 80:80
+kubectl port-forward -n hello-world pod/hello-world 8080:8005
 ```
 
 * Test web application locally
 
 ```
-curl http://127.0.0.1
+curl http://127.0.0.1:8080
 ```
 
 ## Exercise 1 - Build python Flask application
