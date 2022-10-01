@@ -1,69 +1,118 @@
 # Lab Exercises for Kubernetes introduction
 
-
 Visit following websites:
-- https://kubernetes.io/docs/
-- https://kubernetes.io/blog/
-- https://github.com/kubernetes/
-- https://www.cncf.io/
+[Official documentation](https://kubernetes.io/docs/)
+[Github repository](https://github.com/kubernetes/)
+[CNCF website](https://www.cncf.io/)
 
 
-## Exercise 0 - Login and prepare lab environment
+## Introduction to Kubernetes
 
-* Lab environment description 
+Kubernetes basic commands
 
 ```
-       virtualization: KVM with libvirt / virt-manager
-       virtual network: 10.168.0.1/24
-       virtual machines:
-                        * master1 k8s-master1 - 10.168.0.101
-                        * master2 k8s-master2 - 10.168.0.102
-                        * master3 k8s-master3 - 10.168.0.103
-                        * worker1 k8s-worker1 - 10.168.0.201
-                        * worker2 k8s-worker2 - 10.168.0.202
+kubectl cluster-info
+kubectl get nodes
+kubectl get nodes -o wide
+kubectl describe node worker2
+kubectl get ns
+kubectl get pods --namespace kube-system
+kubectl get pods --namespace kube-system -o wide
+kubectl get pods --all-namespaces
+kubectl get pods -A
+kubectl describe pods
+kubectl get events
+kubectl api-resources
+kubectl api-versions
+kubectl explain pod
+kubectl explain pod --recursive
 ```
 
-* Start virtual machines, on k8s-host run:
+Install kubectl bash autocompletion
 
-```shell
-virsh list --all
-virsh start k8s-master1
-virsh start k8s-master2
-virsh start k8s-master3
-virsh start k8s-worker1
-virsh start k8s-worker2
+```
+kubectl completion bash
+echo "source <(kubectl completion bash)" >> ~/.bashrc       
+source <(kubectl completion bash)
 ```
 
-or
+Check labes for nodes and add label role
 
-```shell
-for SRV in k8s-master1 k8s-master2 k8s-master3 k8s-worker1 k8s-worker2; do virsh start $SRV; done
+```
+kubectl get nodes --show-labels
+kubectl label node worker2 node-role.kubernetes.io/worker=
 ```
 
-Note: All exercises please run `k8s-host`
+Remove label from node
 
-## Exercise 1 - Install Kubernetes client
-
-* Install `kubectl` package
-
-```shell
-sudo apt-get install kubectl
-kubectl version
+```
+kubectl label node worker2 node-role.kubernetes.io/worker-
 ```
 
+Check node taints
 
-## Exercise 2 - Configure KUBECONFIG file
+```
+kubectl describe nodes | grep Taints
+```
 
-* Download KUBECONfIG file
+Add `NoSchedule` taint effect to worker1
+
+```
+kubectl taint node worker1 node-role.kubernetes.io/worker=:NoSchedule
+```
+
+Remove node taint
+
+```
+kubectl taint node k8s-worker1 node-role.kubernetes.io/worker-
+```
+
+How to create a template pod manifest
+
+```
+kubectl run test --image=nginx --dry-run -o yaml
+```
+
+How to create a template deployment manifest
+
+```
+kubectl create deployment nginx --image=nginx --dry-run -o yaml
+```
+
+How to create a template service manifest
+
+```
+kubectl create service clusterip my-service --tcp=8080 --dry-run -o yaml
+```
+
+Start busybox pod container
+
+```
+kubectl run busybox --image=busybox -- sleep 3600
+```
+
+Start debian pod container
+```
+kubectl run test --image=debian -- sleep 3600
+```
+
+Create tunnel to service in Kubernetes cluster from Local Dev Machine
+```
+kubectl port-forward -n demo service/<SERVICE_NAME> <LOCAL_PORT>:<SERVICE_PORT>
+```
+
+## Exercise 0 - Configure KUBECONFIG file
+
+Download KUBECONfIG file
 
 ```shell
 mkdir $HOME/.kube
-scp root@master1:/etc/kubernetes/admin.conf $HOME/
+scp root@cp1:/etc/kubernetes/admin.conf $HOME/
 cp $HOME/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-* Check cluster connection
+Check cluster connection
 
 ```shell
 kubectl cluster-info
@@ -71,8 +120,8 @@ kubectl cluster-info
 Output
 
 ```
-Kubernetes control plane is running at https://k8smaster:6443
-CoreDNS is running at https://k8smaster:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+Kubernetes control plane is running at https://cp1:6443
+CoreDNS is running at https://cp1:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
@@ -91,9 +140,9 @@ kubectl --kubeconfig=$HOME/admin.conf cluster-info
 ```
 
 
-## Exercise 3 - Check and configure KUBECONFIG config
+## Exercise 1 - Check and configure KUBECONFIG config
 
-* Check current cluster config
+Check current cluster config
 
 ```shell
 kubectl config view
@@ -104,7 +153,7 @@ kubectl config current-context
 kubectl get pods
 ```
 
-* Set admin context
+Set admin context
 
 ```shell
 kubectl config set-context kube-system-admin --cluster=kubernetes  --user=kubernetes-admin --namespace=kube-system
@@ -113,31 +162,15 @@ kubectl config use-context kube-system-admin
 kubectl get pods
 ```
 
-* Use local context
+Use local context
 
 ```shell
 kubectl config use-context kubernetes-admin@kubernetes
 ```
 
-## Exercise 4 - Setup bash auto-completion
-
-* Configure Kubernetes bash auto-completion
-
-```shell
-sudo apt-get install bash-completion
-source <(kubectl completion bash)
-echo "source <(kubectl completion bash)" >> $HOME/.bashrc
-```
-
-* Test bash auto-completion
-
-```shell
-kubec<Tab> cl<Tab>
-```
-
 ## Optional 1 - Setup text editor
 
-* Prepare text editor for editing Kubernetes yaml manifests
+Prepare text editor for editing Kubernetes yaml manifests
 
 ```shell
 cat << EOF > ~/.vimrc
