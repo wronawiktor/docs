@@ -1,7 +1,7 @@
 # Summary
 
 - [Introduction](README.md)
-- [Containers](containers/containerized-apps.md)
+- [Containers](container-runtime.md)
 - [Kubernetes](kubernetes-introduction.md)
 - [Cluster status](cluster-overview.md)
 - [Pods](pods-operations.md)
