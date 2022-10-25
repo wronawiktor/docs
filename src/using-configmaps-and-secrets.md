@@ -117,7 +117,7 @@ metadata:
 spec:
   containers:
   - name: nginx-secret
-    image: registry.k8s:5000/nginx
+    image: nginx
     command: [ "/bin/sh", "-c", "env" ]
     env:
       - name: dbuser

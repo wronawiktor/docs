@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: registry.k8s:5000/nginx:1.14.2
+        image: nginx:1.14.2
         ports:
         - containerPort: 80
 EOF
@@ -116,7 +116,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: registry.k8s:5000/nginx:1.16.1 # Update the version of nginx from 1.14.2 to 1.16.1
+        image: nginx:1.16.1 # Update the version of nginx from 1.14.2 to 1.16.1
         ports:
         - containerPort: 80
 EOF
@@ -155,7 +155,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: registry.k8s:5000/nginx:1.14.2
+        image: nginx:1.14.2
         ports:
         - containerPort: 80
 EOF
@@ -195,7 +195,7 @@ kubectl delete deployment nginx-deployment
 * Create test deployment
 
 ```shell
-kubectl create deployment test --image=registry.k8s:5000/nginx:1.14.2
+kubectl create deployment test --image=nginx:1.14.2
 ```
 
 * Check deployment status
@@ -220,7 +220,7 @@ kubectl get deploy,rs,pods
 * Update deployment
 
 ```shell
-kubectl set image deployment test nginx=registry.k8s:5000/nginx:1.16.1 --record
+kubectl set image deployment test nginx=nginx:1.16.1 --record
 ```
 
 * Check deployment status 

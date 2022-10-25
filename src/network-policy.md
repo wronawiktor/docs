@@ -6,7 +6,7 @@
 Create an nginx deployment and expose it via a service
 
 ```shell
-kubectl create deployment nginx --image=registry.k8s:5000/nginx
+kubectl create deployment nginx --image=nginx
 ```
 
 Output:
@@ -228,7 +228,7 @@ spec:
     spec:
       containers:
       - name: leader
-        image: "registry.k8s:5000/redis:6.0.5"
+        image: "redis:6.0.5"
         resources:
           requests:
             cpu: 100m

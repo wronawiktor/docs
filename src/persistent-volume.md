@@ -128,7 +128,7 @@ spec:
         app: app-nfs
     spec:
       containers:
-      - image: registry.k8s:5000/nginx
+      - image: nginx
         name: nginx
         volumeMounts:
           - mountPath: "/usr/share/nginx/html"

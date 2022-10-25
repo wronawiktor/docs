@@ -51,7 +51,7 @@ kubectl logs -n metallb-system controller-<Tab>
 
 ```shell
 kubectl create namespace front-web
-kubectl create deployment -n front-web web-app --image=registry.k8s:5000/nginx
+kubectl create deployment -n front-web web-app --image=nginx
 ```
 
 * Scale up application deployment

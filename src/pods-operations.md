@@ -45,7 +45,7 @@ kubectl describe pod -n kube-system kube-apiserver-k8s-master1
 * Create new pod in `default` namespace
 
 ```shell
-kubectl run test1 --image=registry.k8s:5000/nginx
+kubectl run test1 --image=nginx
 ```
 
 * Check pod status and wait until it will be `Running`
@@ -92,7 +92,7 @@ kubectl run app1 -n project1 --image=debian --dry-run=client -o yaml
 * Save pod template to file
 
 ```shell
-kubectl run app1 -n project1 --image=registry.k8s:5000/ubuntu --dry-run=client -o yaml > pod-app1.yaml
+kubectl run app1 -n project1 --image=ubuntu --dry-run=client -o yaml > pod-app1.yaml
 ```
 
 * Apply pod manifest to cluster
@@ -125,7 +125,7 @@ kubectl create namespace debug
 * Start any Linux distro container
 
 ```shell
-kubectl run test -n debug --image=registry.k8s:5000/ubuntu -- sleep 3600
+kubectl run test -n debug --image=ubuntu -- sleep 3600
 ```
 
 * Wait until it will be `Running`
