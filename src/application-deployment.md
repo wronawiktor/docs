@@ -318,7 +318,7 @@ kubectl autoscale deployment -n webapp test --min=1 --max=5 --cpu-percent=60
 * Check HPA staus
 
 ```shell
-kubectl get hpa nginx -n webapp
+kubectl get hpa test -n webapp
 ```
 
 Output:
@@ -331,11 +331,11 @@ nginx   Deployment/nginx   0%/60%    1         5         1          36m
 * Check HPA event logs
 
 ```shell
-kubectl describe hpa nginx
+kubectl describe hpa -n webapp test
 ```
 
 * Clean up
 
 ```shell
-kubectl delete deployment test
+kubectl delete namespace webapp 
 ```
