@@ -164,13 +164,13 @@ EOF
 Apply the new YAML file:
 
 ```shell
- kubectl apply -f https://k8s.io/examples/application/deployment-scale.yaml
+kubectl apply -f https://k8s.io/examples/application/deployment-scale.yaml
 ```
 
 Verify that the Deployment has four Pods:
 
 ```shell
- kubectl get pods -l app=nginx
+kubectl get pods -l app=nginx
 ```
 
 The output is similar to this:
@@ -195,91 +195,130 @@ kubectl delete deployment nginx-deployment
 * Create test deployment
 
 ```shell
-kubectl create deployment test --image=nginx:1.14.2
+kubectl create namespace webapp
+kubectl create deployment -n webapp test --image=nginx:1.14.2
 ```
 
 * Check deployment status
 
 ```shell
-kubectl get deploy,rs,pods
-kubectl rollout history deployment test
+kubectl get deploy,rs,pods -n webapp
+kubectl rollout history deployment -n webapp test
 ```
 
 * Change number of replicas
 
 ```shell
-kubectl scale deployment test --replicas=3 --record
+kubectl scale deployment -n webapp test --replicas=3 --record
 ```
         
 * Check deployment status
 
 ```shell
-kubectl get deploy,rs,pods
+kubectl get deploy,rs,pods -n webapp
 ```
 
 * Update deployment
 
 ```shell
-kubectl set image deployment test nginx=nginx:1.16.1 --record
+export CONTAINER_NAME=$(kubectl get deployment -n webapp test -o jsonpath="{...name}" | cut -d " " -f2)
+kubectl set image deployment -n webapp test $CONTAINER_NAME=nginx:1.20.2 --record
 ```
 
 * Check deployment status 
 
 ```shell
-kubectl get deploy,rs,pods
+kubectl get deploy,rs,pods -n webapp
 ```
 
 * Check deployment rollout history
 
 ```shell
-kubectl rollout history --revision=2 deployment test
+kubectl rollout history --revision=2 -n webapp deployment test
 ```
 
 * Change resource limits 
 
 ```shell
-kubectl set resources deployment test --containers=nginx --limits=cpu=200m,memory=512Mi --record
+kubectl set resources -n webapp deployment test --containers=nginx --limits=cpu=200m,memory=512Mi --record
 ```
 
-* Braking deployment 
+* Mess up deployment
 
 ```shell
-kubectl rollout history deployment test
-kubectl set image deployment test nginx=nginx:1.173 --record 
+kubectl rollout history deployment -n webapp test
+kubectl set image deployment -n webapp test $CONTAINER_NAME=nginx:1.173-NON-EXISTING --record 
 ```
 
 * Check the status
 
 ```shell
-kubectl get deploy,rs,pods
-kubectl rollout status deployment test
+kubectl get deploy,rs,pods -n webapp
+kubectl rollout status deployment -n webapp test
 ```
 
 * Deployment rollback
 
 ```shell
-kubectl rollout undo deployment test
+kubectl rollout undo deployment -n webapp test
 ```
 
 
 ## Exercise 2 - Enable autoscaling
 
+* Deploy latest metrics-server
+
+```shell
+wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+Add `--kubelet-insecure-tls` to `components.yaml`
+
+```
+                ...
+        spec:
+            containers:
+                - args:
+                  - --cert-dir=/tmp
+                  - --secure-port=4443
+                  - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+                  - --kubelet-use-node-status-port
+                  - --metric-resolution=15s
+
+               # Add Line number 136
+
+                - --kubelet-insecure-tls
+```
+
+* Deploy metric server
+
+```shell
+kubectl apply -f components.yaml
+kubectl get deploy -n kube-system metrics-server
+```
+Wait at least 1 minute and try to use:
+
+```shell
+kubectl top nodes
+kubectl top pods -n webapp
+```
+
 * Update nginx deployment and add resources requests CPU `200m`
 
 ```shell
-kubectl patch deployment test --type='json' -p='[{"op":"add", "path":"/spec/template/spec/containers/0/resources/requests", "value":{"cpu":"200m"}}]'
+kubectl patch deployment -n webapp test --type='json' -p='[{"op":"add", "path":"/spec/template/spec/containers/0/resources/requests", "value":{"cpu":"200m"}}]'
 ```
 
 * Enable Horizontal Pod Autoscaler for `test` deployment
 
 ```shell
-kubectl autoscale deployment test --min=1 --max=5 --cpu-percent=60
+kubectl autoscale deployment -n webapp test --min=1 --max=5 --cpu-percent=60
 ```
 
 * Check HPA staus
 
 ```shell
-kubectl get hpa nginx
+kubectl get hpa nginx -n webapp
 ```
 
 Output:
@@ -300,5 +339,3 @@ kubectl describe hpa nginx
 ```shell
 kubectl delete deployment test
 ```
-
-
