@@ -178,17 +178,17 @@ cat << EOF > ~/.vimrc
 set ts=2
 " Sets softtabstop makes spaces feel like tabs
 set sts=2
-" Sets the shift width to 2, making shift operations (<< or >>)               
+" Sets the shift width to 2, making shift operations (<< or >>)
 set sw=2
-" Expands new tabs to spaces               
+" Expands new tabs to spaces
 set expandtab
-" Convert all existing tabs to spaces     
-retab                      
+" Convert all existing tabs to spaces
+retab
 " Enable syntax highlighting
-syntax on               
+syntax on
 " For certain filetypes, enable automatic indenting
-filetype indent plugin on 
-" Show column and line number   
-set ruler                 
+filetype indent plugin on
+" Show column and line number
+set ruler
 EOF
 ```
