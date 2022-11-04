@@ -6,11 +6,11 @@ Notes: [Calico achitecture](https://docs.projectcalico.org/reference/architectur
 
 ## Exercise 0 - Examine installed Kubernetes Network Plugin
 
-* SSH on k8s-master1 and check Kubernetes CNI plugin
+* SSH on cp1 and check Kubernetes CNI plugin
 
 ```shell
-ssh root@master1 cat /etc/cni/net.d/10-calico.conflist
-ssh root@master1 cat /etc/cni/net.d/calico-kubeconfig
+ssh root@cp1 cat /etc/cni/net.d/10-calico.conflist
+ssh root@cp1 cat /etc/cni/net.d/calico-kubeconfig
 ```
 
 * Check Calico controller and agents
@@ -119,9 +119,9 @@ Output
 
 ```
 NAME                        READY   STATUS    RESTARTS   AGE   IP               NODE          NOMINATED NODE   READINESS GATES
-pingtest-64f9cb6b84-qh5zj   1/1     Running   0          9s    192.168.194.84   k8s-worker1   <none>           <none>
-pingtest-64f9cb6b84-snl62   1/1     Running   0          9s    192.168.194.85   k8s-worker1   <none>           <none>
-pingtest-64f9cb6b84-x46vd   1/1     Running   0          9s    192.168.126.10   k8s-worker2   <none>           <none>
+pingtest-64f9cb6b84-qh5zj   1/1     Running   0          9s    192.168.194.84   worker1       <none>           <none>
+pingtest-64f9cb6b84-snl62   1/1     Running   0          9s    192.168.194.85   worker1       <none>           <none>
+pingtest-64f9cb6b84-x46vd   1/1     Running   0          9s    192.168.126.10   worker2       <none>           <none>
 ```
 
 Note the IP addresses of the second two pods, then exec into the first one. For example
@@ -154,7 +154,7 @@ Check routes
 From one of the nodes, verify that routes exist to each of the pingtest pods’ IP addresses. For example
 
 ```shell
-ssh k8s-worker1 ip route get 192.168.126.10
+ssh worker1 ip route get 192.168.126.10
 ```
 
 Result
@@ -213,14 +213,14 @@ Result
 
 ```
 NAME             READY   STATUS    RESTARTS   AGE    IP             NODE          NOMINATED NODE   READINESS GATES
-pingtest-pool2   1/1     Running   0          3d5h   172.18.126.0   k8s-worker2   <none>           <none>
+pingtest-pool2   1/1     Running   0          3d5h   172.18.126.0   worker2       <none>           <none>
 ```
 
 From one of the original pingtest pods, ping the IP address.
 
 ```shell
 ssh worker1 ping 172.18.126.0 -c 4
-ssh master3 ping 172.18.126.0 -c 4
+ssh cp3 ping 172.18.126.0 -c 4
 ```
 
 Result
@@ -247,7 +247,7 @@ kubectl delete pod pingtest-pool2
 
 ## Optional 0 - Create Linux Namespaces with IP
 
-Please `k8s-master3` as `root`
+Please `cp3` as `root`
 
 * Create Linux network namespace for container1
 
@@ -406,7 +406,7 @@ sysctl -w net.ipv4.ip_forward=1
 
 ## Optional 1 - Make Kubernetes container namespaces visible
 
-* SSH on `k8s-worker2`
+* SSH on `worker2`
 
 ```shell
 ln -s /var/run/docker/netns  /var/run/netns
