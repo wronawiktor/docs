@@ -120,12 +120,12 @@ spec:
     image: nginx
     command: [ "/bin/sh", "-c", "env" ]
     env:
-      - name: dbuser
+      - name: DB_USER
         valueFrom:
           secretKeyRef:
             name: mysecret
-            key: dbuser
-      - name: dbpassword
+            key: dbusername
+      - name: DB_PASSWORD
         valueFrom:
           secretKeyRef:
             name: mysecret
@@ -142,8 +142,8 @@ kubectl logs nginx-secret | grep db
 Output should be:
 
 ```
-dbuser=MyDatabaseUsername
-dbpassword=MyDatabasePassword
+DB_USER=MyDatabaseUsername
+DB_PASSWORD=MyDatabasePassword
 ```
 
 
