@@ -9,8 +9,8 @@ const config = {
   title: 'go4clouds',
   tagline: 'Clouds are cool!',
   url: 'https://go4clouds.github.io',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
+  baseUrl: '/docs',
+  onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
 
