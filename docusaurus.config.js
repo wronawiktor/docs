@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'go4clouds',
   tagline: 'Clouds are cool!',
-  url: 'https://go4clouds.it',
-  baseUrl: '/',
+  url: 'https://go4clouds.github.io',
+  baseUrl: '/docs/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
