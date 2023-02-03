@@ -1,0 +1,8 @@
+{
+  "label": "Kubernetes - Tutorial",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Maybe not 5 minutes to learn the most important Kubernetes concepts."
+  }
+}
