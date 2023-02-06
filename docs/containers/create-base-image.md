@@ -4,22 +4,22 @@ sidebar_position: 4
 
 # Create base image
 
-Create simple base image with minimal Linux
+Create a simple base image with a minimal Linux installation
 
-Create project work directory:
+Create a project work directory:
 
 ```shell
 mkdir -p webapp/src
 cd webapp
 ```
 
-Create index website at `src/index.html`:
+Create an index website at `src/index.html`:
 
 ```html title="src/index.html"
 <h1>Hello world!</h1>
 ```
 
-Create `Dockerfile` manifest:
+Create a `Dockerfile` manifest:
 
 ```docker title="./Dockerfile"
 FROM busybox
@@ -31,22 +31,22 @@ EXPOSE 8080
 CMD httpd -p 8080 -h /www; tail -f /dev/null
 ```
 
-Build container image:
+Build a container image:
 
 ```shell
 docker build -f Dockerfile -t webapp .
 ```
 
-Start container with `hello-world` website:
+Start the container with the `hello-world` website:
 
 ```shell
 docker run -d -p 80:8080 webapp
 ```
 
-Test `hello-world` website using `curl` command:
+Test the `hello-world` website using `curl` command:
 
 ```shell
 curl http://127.0.0.1
 ```
 
-`hello-world` page is now available at [http://127.0.0.1](http://127.0.0.1)
+The `hello-world` page is now available at [http://127.0.0.1](http://127.0.0.1)

@@ -8,13 +8,13 @@ Learn how to use `ConfigMap` and `Secret`
 
 ## Use ConfigMap as env variables
 
-Check list of namespaces:
+Check the list of Namespaces:
 
 ```shell
 kubectl get ns
 ```
 
-Create new `myapp` namespace for pod instance:
+Create a new `myapp` Namespace for a Pod instance:
 
 ```shell
 kubectl create ns myapp
@@ -29,7 +29,7 @@ kubectl create configmap -n myapp myapp \
         --dry-run -o yaml > cm-myapp.yaml
 ```
 
-Check ConfigMap `myapp` manifest:
+Check the ConfigMap `myapp` manifest:
 
 ```yaml title="cm-myapp.yaml"
 apiVersion: v1
@@ -42,13 +42,13 @@ data:
   message: This is my own MyAPP message v2.X!
 ```
 
-Apply ConfigMap manifest:
+Apply the ConfigMap manifest:
 
 ```shell
 kubectl apply -f cm-myapp.yaml
 ```
 
-Generate `myapp` Deployment:
+Generate a `myapp` Deployment:
 
 ```shell
 kubectl create deployment -n myapp myapp \
@@ -56,7 +56,7 @@ kubectl create deployment -n myapp myapp \
         --replicas=3 --dry-run -o yaml > deploy-myapp.yaml
 ```
 
-Edit Deployment template manifest for `myapp`: 
+Edit the Deployment template manifest for `myapp`: 
 
 ```yaml title="deploy-myapp.yaml"
 apiVersion: apps/v1
@@ -90,31 +90,31 @@ spec:
               key: message
 ```
 
-Apply Deployment `deploy-myapp.yaml` manifest:
+Apply the Deployment `deploy-myapp.yaml` manifest:
 
 ```shell
 kubectl apply -f deploy-myapp.yaml
 ```
 
-Check Deploymnet,ReplicaSet and Pod status:
+Check the Deploymnet,ReplicaSet and Pod status:
 
 ```shell
 kubectl get deploy,rs,pods -n myapp -o wide
 ```
 
-Open tunnel connection to any Pod instance:
+Open a tunnel connection to any Pod instance:
 
 ```shell
 kubectl port-forward -n myapp pod/myapp-<POD_ID> 8083:8083
 ```
 
-In new terminal check application response:
+In a new terminal check the application response:
 
 ```shell
 curl http://127.0.0.1:8083
 ```
 
-To cleanup remove whole namespace:
+To cleanup remove the whole Namespace:
 
 ```shell
 kubectl delete ns myapp
@@ -122,19 +122,19 @@ kubectl delete ns myapp
 
 ## Store configuration files as ConfigMap 
 
-Check list of namespaces:
+Check the list of Namespaces:
 
 ```shell
 kubectl get ns
 ```
 
-Create new `webapp` namespace for web application:
+Create a new `webapp` Namespace for a web application:
 
 ```shell
 kubectl create ns webapp
 ```
 
-Create virtual host configuration for NGINX server: 
+Create a virtual host configuration for NGINX server: 
 
 ```conf title="webapp.conf"
 server {
@@ -154,7 +154,7 @@ server {
 }
 ```
 
-Create `index.html` file for web application:
+Create the `index.html` file for the web application:
 
 ```html title="index.html"
 <html>
@@ -167,14 +167,14 @@ Create `index.html` file for web application:
 </html>
 ```
 
-Create ConfigMap with vhost configuration and `index.html`:
+Create ConfigMap with a vhost configuration and `index.html`:
 
 ```shell
 kubectl create configmap -n webapp webapp-conf --from-file=webapp.conf
 kubectl create configmap -n webapp webapp-html --from-file=index.html
 ```
 
-Prepare webapp Deployment manifest:
+Prepare the webapp Deployment manifest:
 
 ```yaml title="deploy-webapp.yaml"
 apiVersion: apps/v1
@@ -217,32 +217,32 @@ spec:
         emptyDir: {}
 ```
 
-Create webapp Deployment which is relying on previous ConfigMap's:
+Create a webapp Deployment which is relying on previous ConfigMap's:
 
 ```shell
 kubectl apply -f deploy-webapp.yaml
 ```
 
-Check Deployment, ReplicaSet and Pod status:
+Check the Deployment, ReplicaSet and Pod status:
 
 ```shell
 kubectl get events --sort-by='.lastTimestamp' -n myapp
 kubectl get deploy,rs,pods -n myapp -o wide
 ```
 
-To test webapp open tunnel connection to it:
+To test the webapp open a tunnel connection to it:
 
 ```shell
 kubectl port-forward -n webapp pod/webapp-<POD_ID> 8080:80
 ```
 
-In new terminal test application:
+In a new terminal test the application:
 
 ```shell
 curl http://127.0.0.1:8080
 ```
 
-To cleanup remove `myapp` namespace:
+To cleanup remove the `myapp` Namespace:
 
 ```shell
 kubectl delete ns myapp
@@ -250,19 +250,19 @@ kubectl delete ns myapp
 
 ## Use Secret object
 
-Create `database` namespace:
+Create the `database` Namespace:
 
 ```bash
 kubectl create namespace database
 ```
 
-Create Secret object which will store MariaDB administrator password:
+Create a Secret object which will store the MariaDB administrator password:
 
 ```shell
 kubectl create secret -n database generic mariadb --from-literal=password="dbpassword"
 ```
 
-Deploy MariaDB instance which will use administrator password:
+Deploy the MariaDB instance which will use the administrator password:
 
 ```yaml title="deploy-mariadb.yaml"
 apiVersion: apps/v1
@@ -301,19 +301,19 @@ spec:
         emptyDir: {}
 ```
 
-Apply manifest on Kubernetes cluster:
+Apply a manifest on Kubernetes cluster:
 
 ```shell
 kubectl apply -f deploy-mariadb.yaml
 ```
 
-Check Deployment status:
+Check the Deployment status:
 
 ```shell
 kubectl get deploy,rs,pods -n database
 ```
 
-Open terminal to Pod container:
+Open a terminal to a Pod container:
 
 ```shell
 kubectl exec -ti -n database mariadb-<POD_ID> -- bash

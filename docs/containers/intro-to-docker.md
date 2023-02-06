@@ -6,13 +6,13 @@ sidebar_position: 1
 
 Basic `docker` commands to learn first
 
-After `docker` installation add your account to docker group
+After `docker` installation add your account to a docker group
 
 ```shell
 usermod -a -G docker YOUR_USERNAME
 ```
 
-First `docker` commands to test first
+First `docker` commands to test:
 
 ```shell
 docker version
@@ -23,7 +23,7 @@ docker system df
 docker system prune --volumes -a
 ```
 
-To start new container with terminal and in interactive mode
+To start a new container with a terminal and in interactive mode:
 
 ```shell
 docker run -ti debian sh
@@ -34,7 +34,7 @@ docker run -ti debian sh
     # exit
 ```
 
-To start new container in dettached mode
+To start the new container in dettached mode
 
 ```shell
 docker run -d --name=test busybox sleep 3600
@@ -47,7 +47,7 @@ docker ps -q -f name=test
 docker inspect $(docker ps -q -f name=test)
 ```
 
-Docker network namespaces are stored in `/var/run/docker/netns`. We can make Docker network namespaces visible by creating symbolic link in `/var/run/netns`
+Docker network namespaces are stored in `/var/run/docker/netns`. We can make the Docker network namespaces visible by creating a symbolic link in `/var/run/netns`
 
 ```shell
 ln -Ts /var/run/docker/netns  /var/run/netns
