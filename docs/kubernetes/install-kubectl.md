@@ -4,16 +4,16 @@ sidebar_position: 1
 
 # Install kubectl
 
-Install Kubernetes client `kubectl`
+Install the Kubernetes client `kubectl`
 
-## Download kubectl client
+## Download the kubectl client
 
-After **Kubernetes** cluster installation, get `kubectl` command line tool based on instructions from documentation [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl).
+After **Kubernetes** cluster installation, get a `kubectl` command line tool based on instructions from the documentation [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl).
 
 
-## Get **KUBECONFIG** credentials file
+## Get the **KUBECONFIG** credentials file
 
-After `kubectl` installation get **KUBECONFIG** file:
+After the `kubectl` installation get the **KUBECONFIG** file:
 
 ```shell
 mkdir $HOME/.kube
@@ -21,7 +21,7 @@ scp root@cp1:/etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-Check connection to **Kubernetes** cluster:
+Check the connection to the **Kubernetes** cluster:
 
 ```shell
 kubectl cluster-info
@@ -51,7 +51,7 @@ kubectl --kubeconfig=$HOME/.kube/config cluster-info
 
 ## Configure `kubectl` client
 
-Configure bash autocompletion for `kubectl`:
+Configure Bash autocompletion for `kubectl`:
 
 ```shell
 kubectl completion bash
@@ -59,11 +59,11 @@ echo "source <(kubectl completion bash)" >> ~/.bashrc
 source <(kubectl completion bash)
 ```
 
-## Configure `vim` text editor
+## Configure the `vim` text editor
 
-As the next operation can be configuration for text editor, which you will be using for editting **Kubenetes** `yaml` manifests.
+As the next operation can be configuration of the text editor, which you will be using for editting **Kubenetes** `yaml` manifests.
 
-Create **Vim** custom configuration file:
+Create a **Vim** custom configuration file:
 
 ```txt title="$HOME/.vimrc"
 " Sets tabstop to 2 for working with YAML
@@ -84,9 +84,9 @@ filetype indent plugin on
 set ruler
 ```
 
-## Check **KUBECONFIG** configuration
+## Check the **KUBECONFIG** configuration
 
-Check current **KUBECONFIG** config:
+Check the current **KUBECONFIG** config:
 
 ```shell
 kubectl config view
@@ -106,7 +106,7 @@ kubectl config use-context kube-system-admin
 kubectl get pods
 ```
 
-Switch back to previous context:
+Switch back to the previous context:
 
 ```shell
 kubectl config use-context kubernetes-admin@kubernetes

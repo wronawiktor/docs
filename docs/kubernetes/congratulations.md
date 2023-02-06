@@ -14,7 +14,7 @@ Have **5 more minutes**? Take a look at ** and ****.
 
 Anything **unclear** or **buggy** in this tutorial?
 
-## What's next?
+## What's next? 
 
 - Read the [official documentation](https://docusaurus.io/)
 - Modify your site configuration with [`docusaurus.config.js`](https://docusaurus.io/docs/api/docusaurus-config)

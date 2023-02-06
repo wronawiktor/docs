@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Create python application
 
-Create simple python application with Flask
+Create a simple Python application with Flask
 
 
 Install required packages:
@@ -13,14 +13,14 @@ Install required packages:
 apt install python3 python3-pip git-core
 ```
 
-Create application work directory:
+Set an application working directory:
 
 ```shell
 mkdir -p myapp/src
 cd myapp
 ```
 
-Write main application `main.py` file:
+Write the main application `main.py` file:
 
 ```python title="src/main.py"
 from flask import Flask
@@ -40,13 +40,13 @@ Create requirements file with dependencies:
 Flask
 ```
 
-Install python required modules:
+Install Python required modules:
 
 ```shell
 pip3 install -r src/requirements.txt
 ```
 
-Start application and test it locally:
+Start the application and test it locally:
 
 ```shell
 python3 src/main.py
@@ -65,13 +65,13 @@ Output:
  * Running on http://172.16.4.253:8081/ (Press CTRL+C to quit)
 ```
 
-In another terminal test application HTTP response:
+In another terminal test the application HTTP response:
 
 ```shell
 curl http://0.0.0.0:8081
 ```
 
-Create container file manifest:
+Create a container file manifest:
 
 ```Dockerfile title="./Dockerfile"
 FROM registry.opensuse.org/opensuse/leap:15.3
@@ -87,7 +87,7 @@ EXPOSE 8081
 CMD ["python3", "/app/main.py"]
 ```
 
-Initialize git repository and add application files to it:
+Initialize a git repository and add application files to it:
 
 ```shell
 git config --global user.email "your@example-email.com"
@@ -99,7 +99,7 @@ git commit -m "Initial commit" -a
 git log
 ```
 
-Finally build cointainer image:
+Finally build a cointainer image:
 
 ```shell
 docker build -f Dockerfile -t myapp:v1.0 .
@@ -164,25 +164,25 @@ Successfully built 14303156d868
 Successfully tagged myapp:v1.0
 ```
 
-Star container with python application:
+Start the container with the python application:
 
 ```shell
 docker run -p 8081:8081 myapp:v1.0
 ```
 
-Prepare container image for publishing. Update container image tag and add repository name:
+Prepare the container image for publishing. Update the container image tag and add a repository name:
 
 ```shell
 docker tag myapp ttl.sh/myapp-v1.0:8h
 ```
 
-Push container image to [ttl.sh](https://ttl.sh) annonymous container registry:
+Push the container image to [ttl.sh](https://ttl.sh) an annonymous container registry:
 
 ```shell
 docker push ttl.sh/myapp-v1.0:8h
 ```
 
-Now container image was published and now it can be used everywhere and start with following command:
+Now when the container image was published, it can be used everywhere. The container starts with the following command:
 
 ```shell
 docker run ttl.sh/myapp-v1.0:8h

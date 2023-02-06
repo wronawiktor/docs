@@ -2,40 +2,40 @@
 sidebar_position: 11
 ---
 
-# Use Ingress Controller
+# Use an Ingress Controller
 
 
-## Deploy NGINX Ingress Controller
+## Deploy the NGINX Ingress Controller
 
 Note: [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy)
 
-Add Helm chart repository with Ingress NGINX
+Add a Helm chart repository with the Ingress NGINX
 
 ```shell
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 ```
 
-Install NGINX Ingress Controller:
+Install the NGINX Ingress Controller:
 
 ```shell
 helm install --create-namespace --namespace ingress-nginx ingress-nginx ingress-nginx/ingress-nginx
 ```
 
-Update NGINX Ingress Controller with `hostNetwork` true:
+Update the NGINX Ingress Controller with `hostNetwork` true:
 
 ```shell
 helm upgrade -n ingress-nginx ingress-nginx ingress-nginx/ingress-nginx --set controller.hostNetwork=true
 ```
 
-Verify Ingress NGINX installation:
+Verify the Ingress NGINX installation:
 
 ```shell
 kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx
 helm list -n ingress-nginx
 ```
 
-* Check installed version
+* Check the installed version
 
 ```shell
 POD_NAME=$(kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx -o jsonpath='{.items[0].metadata.name}')
@@ -55,10 +55,10 @@ NGINX Ingress controller
 -------------------------------------------------------------------------------
 ```
 
-## Deploy hello-world app
+## Deploy a hello-world app
 
 
-Create new namespace:
+Create a new Namespace:
 
 ```shell
 kubectl create namespace webapp
@@ -76,7 +76,7 @@ Expose the Deployment:
 kubectl expose deployment -n webapp hello-world --type=ClusterIP --port=8080
 ```
 
-Verify the Service is created and is available on a node port:
+Verify if the Service is created and is available on a node port:
 
 ```shell
 kubectl get service -n webapp hello-world
@@ -93,7 +93,7 @@ Create an Ingress resource:
 
 The following file is an Ingress resource that sends traffic to your Service via hello-world.nc.
 
-Create hello-ingress.yaml from the following file:
+Create the hello-ingress.yaml from the following file:
 
 ```yaml title="hello-ingress.yaml"
 apiVersion: networking.k8s.io/v1
@@ -124,7 +124,7 @@ Create the Ingress resource by running the following command:
 kubectl apply -f hello-ingress.yaml
 ```
 
-Verify the IP address is set:
+Verify if the IP address is set:
 
 ```shell
 kubectl get ingress -n webapp
@@ -148,7 +148,7 @@ IP_ADDRESS hello-world.nc
 sudo bash -c 'echo "IP_ADDRESS hello-world.nc" >> /etc/hosts'
 ```
 
-Verify that the Ingress controller is directing traffic:
+Verify if the Ingress controller is directing traffic:
 
 ```shell
 curl http://hello-world.nc
