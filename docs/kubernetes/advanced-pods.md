@@ -59,7 +59,7 @@ kubectl apply -f pod-stress.yaml
 View detailed information about the Pod:
 
 ```shell
-kubectl get pod -n bechmark stress -o wide
+kubectl get pod -n benchmark stress -o wide
 ```
 
 After a few seconds check resource usage:
