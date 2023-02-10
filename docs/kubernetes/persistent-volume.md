@@ -126,6 +126,7 @@ metadata:
   labels:
     app: webapp-nfs
   name: webapp
+  namespace: webapp
 spec:
   replicas: 3
   selector:
@@ -151,7 +152,7 @@ spec:
 Deploy web application with nfs volume mounted:
 
 ```shell
-kubectl apply -f webapp-nfs.yaml
+kubectl apply -f deploy-webapp-nfs.yaml
 ```
 
 Check Deployment status:
