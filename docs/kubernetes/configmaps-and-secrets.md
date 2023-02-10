@@ -226,8 +226,8 @@ kubectl apply -f deploy-webapp.yaml
 Check the Deployment, ReplicaSet and Pod status:
 
 ```shell
-kubectl get events --sort-by='.lastTimestamp' -n myapp
-kubectl get deploy,rs,pods -n myapp -o wide
+kubectl get events --sort-by='.lastTimestamp' -n webapp
+kubectl get deploy,rs,pods -n webapp -o wide
 ```
 
 To test the webapp open a tunnel connection to it:
@@ -242,10 +242,10 @@ In a new terminal test the application:
 curl http://127.0.0.1:8080
 ```
 
-To cleanup remove the `myapp` Namespace:
+To cleanup remove the `webapp` Namespace:
 
 ```shell
-kubectl delete ns myapp
+kubectl delete ns webapp
 ```
 
 ## Use Secret object
