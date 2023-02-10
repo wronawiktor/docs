@@ -14,7 +14,7 @@ Install NFS server on **cp1**:
 sudo apt-get install -y nfs-kernel-server
 ```
 
-Create NFS export directory and set proper perimissions:
+Create NFS export directory and set proper perimissions on **cp1**:
 
 ```shell
 sudo mkdir /srv/share
@@ -22,20 +22,20 @@ sudo chmod 1777 /srv/share
 echo "Hello World Simple Website" > /srv/share/index.html
 ```
 
-Export NFS directory to Kubernetes cluster nodes:
+Export NFS directory to Kubernetes cluster nodes on **cp1**:
 
 ```shell
 sudo vim /etc/exports
 /srv/share/ *(rw,sync,no_root_squash,subtree_check)
 ```
 
-Check /etc/exports on any worker node:
+On **cp1** trigger volume export to worker nodes:
 
 ```shell
 sudo exportfs -ra
 ```
 
-On all Kubernetes nodes install `nfs-common` package:
+On **all*** Kubernetes nodes install `nfs-common` package:
 
 ```shell
 for SRV in cp{1,2,3} worker{1,2,3} ; do
