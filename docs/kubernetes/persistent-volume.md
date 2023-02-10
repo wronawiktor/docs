@@ -95,7 +95,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pvc-nfs
-  namespaces: webapp
+  namespace: webapp
 spec:
   accessModes:
     - ReadWriteMany
