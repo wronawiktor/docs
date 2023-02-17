@@ -188,7 +188,7 @@ kubectl port-forward -n webapp pod/webapp-<Tab> 8080:80 &
 Check webapp response on localhost:
 
 ```shell
-curl http://1270.0.0.1:8080
+curl http://127.0.0.1:8080
 ```
 
 To cleanup remove `webapp` Namespace:
