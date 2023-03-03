@@ -4,22 +4,15 @@ sidebar_position: 99
 
 # Congratulations!
 
-Test by Michal
+You have just learned the **basics of Kubernetes** and made .
 
-You have just learned the **basics of Docusaurus** and made some changes to the **initial template**.
+Kubernetes has **much more to offer**!
 
-Docusaurus has **much more to offer**!
+Have **few more more**? Take a look at official [Kubernetes Tutorials](https://kubernetes.io/docs/tutorials/).
 
-Have **5 more minutes**? Take a look at ** and ****.
-
-Anything **unclear** or **buggy** in this tutorial?
+Anything **unclear** or **buggy** in this tutorial? Please let us know by opening [Github Issue](https://github.com/go4clouds/docs/issues)
 
 ## What's next? 
 
-- Read the [official documentation](https://docusaurus.io/)
-- Modify your site configuration with [`docusaurus.config.js`](https://docusaurus.io/docs/api/docusaurus-config)
-- Add navbar and footer items with [`themeConfig`](https://docusaurus.io/docs/api/themes/configuration)
-- Add a custom [Design and Layout](https://docusaurus.io/docs/styling-layout)
-- Add a [search bar](https://docusaurus.io/docs/search)
-- Find inspirations in the [Docusaurus showcase](https://docusaurus.io/showcase)
-- Get involved in the [Docusaurus Community](https://docusaurus.io/community/support)
+- Read the [official documentation](https://kubernetes.io/)
+- Get involved in the [Kubernetes Community](https://kubernetes.io/community/)

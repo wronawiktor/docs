@@ -63,7 +63,7 @@ source <(kubectl completion bash)
 
 Next up, let's configure the  text editor, which you will be using for editing **Kubernetes** `yaml` manifests.
 
-The `vim` text editor is a minimalistic text editor that is often available even in bare-bones deployment, which is why we are recommending it. However, it is often considered to be complicated and non-intuitive for developers that are fairly new to the command line. As an alternative to  `vim`, you can consider the `GNU Nano` text editor, which is described in the next section.
+The `vim` text editor is a minimalistic text editor that is often available even in bare-bones deployment, which is why we are recommending it. However, it is often considered to be complicated and non-intuitive for developers that are fairly new to the command line. As an alternative to  `vim`, you can consider the GNU `nano` text editor, which is described in the next section.
 
 If you have chosen to stick with `vim`, create a **Vim** custom configuration file:
 
@@ -86,9 +86,9 @@ filetype indent plugin on
 set ruler
 ```
 
-## Configure the `GNU nano` text editor
+## Configure the `nano` text editor
 
-As an alternative to  `vim`,  the `GNU nano` text editor is a lightweight and versatile terminal-based text editor. 
+As an alternative to  `vim`,  the GNU `nano` text editor is a lightweight and versatile terminal-based text editor. 
 
 In order to use `nano` to edit **Kubernetes** `yaml` manifest, we need to edit the configuration file, located at `$HOME/.nanorc` 
 
