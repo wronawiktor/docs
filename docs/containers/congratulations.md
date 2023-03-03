@@ -10,4 +10,4 @@ Containers have **much more to offer**!
 
 ## What's next?
 
-- Read the [Kubernetes - Tutorial](https://docusaurus.io/)
+- Read the [Kubernetes - Tutorial](https://go4clouds.github.io/docs/category/kubernetes---tutorial)
