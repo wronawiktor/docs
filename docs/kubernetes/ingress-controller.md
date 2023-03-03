@@ -35,7 +35,7 @@ kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx
 helm list -n ingress-nginx
 ```
 
-* Check the installed version
+Check installed Ingress NGINX version
 
 ```shell
 POD_NAME=$(kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx -o jsonpath='{.items[0].metadata.name}')
@@ -93,17 +93,16 @@ Create an Ingress resource:
 
 The following file is an Ingress resource that sends traffic to your Service via hello-world.nc.
 
-Create the hello-ingress.yaml from the following file:
+Create the ingress-hello.yaml from the following file:
 
-```yaml title="hello-ingress.yaml"
+```yaml title="ingress-hello.yaml"
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-ingress
+  name: ingress-hello
   namespace: webapp
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
     - host: hello-world.nc
@@ -121,7 +120,7 @@ spec:
 Create the Ingress resource by running the following command:
 
 ```shell
-kubectl apply -f hello-ingress.yaml
+kubectl apply -f ingress-hello.yaml
 ```
 
 Verify if the IP address is set:
@@ -134,7 +133,7 @@ Note: This can take a couple of minutes.
 
 ```
 NAME              CLASS    HOSTS              ADDRESS        PORTS   AGE
-hello-ingress     <none>   hello-world.nc     IP_ADDRESS     80      38s
+ingress-hello     <none>   hello-world.nc     IP_ADDRESS     80      38s
 ```
 
 Add the following line to the bottom of the /etc/hosts file.
@@ -225,3 +224,141 @@ Hello, world!
 Version: 2.0.0
 Hostname: hello-world2-75cd47646f-t8cjk
 ```
+
+## Install and use Certificate Manager
+
+To secure HTTP connection to Ingress Controller we can use additional extension, which is [Certficate Manager](https://cert-manager.io/)
+
+Add a Helm chart repository with the Certificate Manager
+
+```shell
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+```
+
+Check available Certificate Manager versions:
+
+```shell
+helm search repo jetstack/cert-manager -l
+```
+
+Install the Certificate Manager:
+
+```shell
+helm install cert-manager jetstack/cert-manager  \
+       --namespace cert-manager --create-namespace --version v1.10.2 --set installCRDs=true
+```
+
+Verify the Certificate Manager installation:
+
+```shell
+helm list -n cert-manager
+helm status -n cert-manager cert-manager
+helm history -n cert-manager cert-manager
+```
+
+Check if the Certificate Manager pods are running:
+
+```shell
+kubectl get pods -n cert-manager
+```
+
+Create certificate Issuers for webapp application:
+
+We'll set up two issuers for Let's Encrypt in this example: staging and production
+
+The Let's Encrypt production issuer has very strict rate limits. When you're experimenting and learning, it can be very easy to hit those limits. Because of that risk, we'll start with the Let's Encrypt staging issuer, and once we're happy that it's working we'll switch to the production issuer.
+
+Note that you'll see a warning about untrusted certificates from the staging issuer, but that's totally expected.
+
+Create this definition locally and update the email address to your own. This email is required by Let's Encrypt and used to notify you of certificate expiration and updates.
+
+To learn more about it, go to official [Certificate Manager documentation](https://cert-manager.io/docs/tutorials/acme/nginx-ingress/#step-6---configure-a-lets-encrypt-issuer)
+
+```yaml title="issuer-staging.yaml"
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-staging
+  namespace: webapp
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: example@your_domain.com
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+    - http01:
+        ingress:
+          class:  nginx
+```
+
+```yaml title="issuer-production.yaml"
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-production
+  namespace: webapp
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: example@your_domain.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - http01:
+        ingress:
+          class:  nginx
+```
+
+Apply Issuer manifests onto Kubernetes:
+
+```shell
+kubectl apply -f issuer-staging.yaml
+kubectl apply -f issuer-production.yaml
+```
+
+Both of these issuers are configured to use the `HTTP01` challenge provider.
+
+Check on the status of the issuer after you create it:
+
+```shell
+kubectl describe -n webapp issuer letsencrypt-staging
+```
+
+Now we can tell Ingress NGINX to use Certificate Manager Issuer to secure communication:
+
+```yaml title="ingress-hello.yaml"
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-hello
+  namespace: webapp
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  rules:
+    - host: web<LAB_ID>.go4clouds.net
+      http:
+        paths:
+          - path: /
+...
+
+  tls:
+    - hosts:
+      - web<LAB_ID>.go4clouds.net
+```
+
+Apply changes with Ingress to Kubernetes:
+
+```shell
+kubectl apply -f ingress-hello.yaml 
+```
+
+Now you should be able to open in your Web browser website `https://web<LAB_ID>.go4clouds.net`
+
+
+
+
+
