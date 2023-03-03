@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: ghcr.io/mjura/myapp:v1.0
+        image: ghcr.io/go4clouds/myapp:v1.0
         ports:
         - name: http
           containerPort: 8081
@@ -111,7 +111,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: ghcr.io/mjura/myapp:v1.0
+        image: ghcr.io/go4clouds/myapp:v1.0
         ports:
         - name: http
           containerPort: 8081
@@ -156,7 +156,7 @@ Create `webapp` Deployment:
 
 ```shell
 kubectl create namespace webapp
-kubectl create deployment -n webapp webapp --image=nginx:1.16.1
+kubectl create deployment -n webapp webapp --image=docker.io/library/nginx:1.16.1
 ```
 
 Check Deployment status:
@@ -182,7 +182,7 @@ Update Deployment configuration:
 
 ```shell
 export CONTAINER_NAME=$(kubectl get deployment -n webapp webapp -o jsonpath="{...name}" | cut -d " " -f2)
-kubectl set image deployment -n webapp webapp $CONTAINER_NAME=nginx:1.20.2 --record
+kubectl set image deployment -n webapp webapp $CONTAINER_NAME=docker.io/library/nginx:1.20.2 --record
 ```
 
 Check Deployment status:
@@ -207,7 +207,7 @@ Try to break Deployment and use broken container image:
 
 ```shell
 kubectl rollout history deployment -n webapp webapp
-kubectl set image deployment -n webapp webapp $CONTAINER_NAME=nginx:1.24.3-NON-EXISTING --record 
+kubectl set image deployment -n webapp webapp $CONTAINER_NAME=docker.io/library/nginx:1.24.3-NON-EXISTING --record 
 ```
 
 Check Deployment status:

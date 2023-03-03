@@ -52,7 +52,7 @@ Generate a `myapp` Deployment:
 
 ```shell
 kubectl create deployment -n myapp myapp \
-        --image=ghcr.io/mjura/myapp:v2.0 \
+        --image=ghcr.io/go4clouds/myapp:v2.0 \
         --replicas=3 --dry-run -o yaml > deploy-myapp.yaml
 ```
 
@@ -76,7 +76,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: ghcr.io/mjura/myapp:v2.0
+        image: ghcr.io/go4clouds/myapp:v2.0
         env:
         - name: MYAPP_PORT
           valueFrom:
@@ -194,7 +194,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.23.2
+        image: docker.io/library/nginx:1.23.2
         ports:
         - containerPort: 80
         volumeMounts:
@@ -282,7 +282,7 @@ spec:
         app: mariadb
     spec:
       containers:
-      - image: mariadb:10.10
+      - image: docker.io/library/mariadb:10.10
         name: mariadb
         env:
         - name: MYSQL_ROOT_PASSWORD

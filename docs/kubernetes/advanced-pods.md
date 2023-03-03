@@ -141,7 +141,7 @@ metadata:
 spec:
   containers:
   - name: myapp
-    image: ghcr.io/mjura/myapp:v1.0
+    image: ghcr.io/go4clouds/myapp:v1.0
     resources:
       limits:
         cpu: "500m"
@@ -200,7 +200,7 @@ metadata:
 spec:
   containers:
   - name: myapp
-    image: ghcr.io/mjura/myapp:v1.0
+    image: ghcr.io/go4clouds/myapp:v1.0
     resources:
       limits:
         cpu: "500m"
@@ -249,7 +249,7 @@ Events:
   Type     Reason     Age                From               Message
   ----     ------     ----               ----               -------
   Normal   Scheduled  52s                default-scheduler  Successfully assigned myapp/myapp to worker1
-  Normal   Pulled     17s (x2 over 51s)  kubelet            Container image "ghcr.io/mjura/myapp:v1.0" already present on machine
+  Normal   Pulled     17s (x2 over 51s)  kubelet            Container image "ghcr.io/go4clouds/myapp:v1.0" already present on machine
   Normal   Created    17s (x2 over 51s)  kubelet            Created container myapp
   Normal   Started    17s (x2 over 51s)  kubelet            Started container myapp
   Warning  Unhealthy  12s (x2 over 47s)  kubelet            Liveness probe failed: Get "http://192.168.235.155:8080/": dial tcp 192.168.235.155:8080: connect: connection refused
@@ -269,7 +269,7 @@ metadata:
 spec:
   containers:
   - name: myapp
-    image: ghcr.io/mjura/myapp:v1.0
+    image: ghcr.io/go4clouds/myapp:v1.0
     resources:
       limits:
         cpu: "500m"
