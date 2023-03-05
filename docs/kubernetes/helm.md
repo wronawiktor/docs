@@ -146,5 +146,133 @@ kubectl get deploy,rs,pods -n test -o wide
 
 ## Develop simple Helm chart
 
+Generate new Helm chart:
 
+```shell
+helm create myapp
+```
+
+Remove not needed files:
+
+```shell
+rm myapp/charts myapp/templates/* myapp/values.yaml -r
+```
+
+Go into `myapp` directory and edit `Chart.yaml`
+
+```yaml title="Chart.yaml"
+apiVersion: v2
+name: myapp
+description: A Helm chart for Kubernetes
+
+type: application
+
+version: 0.1.0
+
+appVersion: "v1.0"
+```
+
+Go into `templates` subdirectory and generate `delployment.yaml` manifest:
+
+```shell
+cd templates
+kubectl create deployment myapp --image=ghcr.io/mjura/myapp:v1.0 --replicas=3 --dry-run -o yaml > deployment.yaml
+```
+
+Edit `deployment.yaml` manifest:
+
+```yaml title="deployment.yaml"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myapp
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
+        name: myapp
+```
+
+Go to main `myapp` directory
+
+```shell
+cd ..
+```
+
+and create `values.yaml`:
+
+```yaml title="values.yaml"
+replicaCount: 3
+
+image: ghcr.io/mjura/myapp
+```
+
+Check `myapp` Helm chart directory tree:
+
+```shell
+cd ..
+tree myapp
+```
+
+Output:
+
+```shell
+myapp/
+├── Chart.yaml
+├── templates
+│   └── deployment.yaml
+└── values.yaml
+```
+
+Validate `myapp` Helm chart:
+
+```shell
+helm lint ./myapp
+```
+
+Output:
+
+```shell
+==> Linting ./myapp/
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+```
+
+Try to generate and dry run `myapp` installation:
+
+```shell
+helm install --create-namespace --namespace myapp release-name ./myapp --debug --dry-run
+```
+
+To install `myapp` just execute:
+
+```shell
+helm install --create-namespace --namespace myapp release-name ./myapp
+```
+
+Check application installation status:
+
+```shell
+helm list -n myapp
+helm status -n myapp release-name
+helm history -n myapp release-name
+```
+
+Check list deployment and pod list:
+
+```shell
+kubectl get deploy,rs,pods -n myapp
+kubectl logs -n myapp -l app=myappS
+```
 
