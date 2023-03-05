@@ -2,10 +2,10 @@
 sidebar_position: 14
 ---
 
-# Kubernetes troubleshooting
+# Troubleshooting
 
 
-## Debug applications
+## Debug any application
 
 Create test Namespace:
 
