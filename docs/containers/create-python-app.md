@@ -173,7 +173,7 @@ docker run -p 8081:8081 myapp:v1.0
 Prepare the container image for publishing. Update the container image tag and add a repository name:
 
 ```shell
-docker tag myapp ttl.sh/myapp-v1.0:8h
+docker tag myapp:v1.0 ttl.sh/myapp-v1.0:8h
 ```
 
 Push the container image to [ttl.sh](https://ttl.sh) an annonymous container registry:

@@ -40,13 +40,13 @@ docker build -f Dockerfile -t webapp .
 Start a container with the `hello-world` website:
 
 ```shell
-docker run -d -p 80:8080 webapp
+docker run -d -p 8081:8080 webapp
 ```
 
 Test the `hello-world` website using the `curl` command:
 
 ```shell
-curl http://127.0.0.1
+curl http://127.0.0.1:8081
 ```
 
-The `hello-world` page is now available at [http://127.0.0.1](http://127.0.0.1)
+The `hello-world` page is now available at [http://127.0.0.1:8081](http://127.0.0.1:8081)
