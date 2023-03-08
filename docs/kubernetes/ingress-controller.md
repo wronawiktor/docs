@@ -148,7 +148,7 @@ Verify if the Ingress controller is directing traffic:
 curl http://hello-world.nc
 ```
 
-or 
+or
 
 ```shell
 curl --header 'Host: hello-world.nc' http://IP_ADDRESS
@@ -272,7 +272,7 @@ To learn more about it, go to official [Certificate Manager documentation](https
 
 ```yaml title="issuer-staging.yaml"
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
   namespace: webapp
@@ -290,7 +290,7 @@ spec:
 
 ```yaml title="issuer-production.yaml"
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: letsencrypt-production
   namespace: webapp
@@ -343,12 +343,13 @@ spec:
   tls:
     - hosts:
       - web<LAB_ID>.go4clouds.net
+      secretName: web-go4clouds-net-tls
 ```
 
 Apply changes with Ingress to Kubernetes:
 
 ```shell
-kubectl apply -f ingress-hello.yaml 
+kubectl apply -f ingress-hello.yaml
 ```
 
 Now you should be able to open in your Web browser website `https://web<LAB_ID>.go4clouds.net`
