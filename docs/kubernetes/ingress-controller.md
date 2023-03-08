@@ -285,7 +285,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          class:  nginx
+          class:  nginx
 ```
 
 ```yaml title="issuer-production.yaml"
@@ -303,7 +303,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          class:  nginx
+          class: nginx
 ```
 
 Apply Issuer manifests onto Kubernetes:
