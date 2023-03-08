@@ -181,7 +181,7 @@ Edit the existing hello-ingress.yaml and add the following lines:
         pathType: Prefix
         backend:
           service:
-            name: web2
+            name: hello-world2
             port:
               number: 8080
 ```
