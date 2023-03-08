@@ -343,6 +343,7 @@ spec:
   tls:
     - hosts:
       - web<LAB_ID>.go4clouds.net
+      secretName: web<LAB_ID>.go4clouds.net-tls
 ```
 
 Apply changes with Ingress to Kubernetes:
