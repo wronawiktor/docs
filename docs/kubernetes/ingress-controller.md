@@ -274,36 +274,36 @@ To learn more about it, go to official [Certificate Manager documentation](https
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: letsencrypt-staging
-  namespace: webapp
+  name: letsencrypt-staging
+  namespace: webapp
 spec:
-  acme:
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: example@your_domain.com
-    privateKeySecretRef:
-      name: letsencrypt-staging
-    solvers:
-    - http01:
-        ingress:
-          class:  nginx
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: example@your_domain.com
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+    - http01:
+        ingress:
+          class:  nginx
 ```
 
 ```yaml title="issuer-production.yaml"
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: letsencrypt-production
-  namespace: webapp
+  name: letsencrypt-production
+  namespace: webapp
 spec:
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    email: example@your_domain.com
-    privateKeySecretRef:
-      name: letsencrypt-prod
-    solvers:
-    - http01:
-        ingress:
-          class:  nginx
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: example@your_domain.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - http01:
+        ingress:
+          class:  nginx
 ```
 
 Apply Issuer manifests onto Kubernetes:
