@@ -174,7 +174,7 @@ Expose the Deployment:
 kubectl expose deployment -n webapp hello-world2 --port=8080 --type=ClusterIP
 ```
 
-Edit the existing hello-ingress.yaml and add the following lines:
+Edit the existing ingress-hello.yaml and add the following lines:
 
 ```
       - path: /v2
@@ -189,7 +189,7 @@ Edit the existing hello-ingress.yaml and add the following lines:
 Apply the changes:
 
 ```shell
-kubectl apply -f hello-ingress.yaml
+kubectl apply -f ingress-hello.yaml
 ```
 
 Test Your Ingress by accessing the 1st version of the Hello World app.
@@ -240,8 +240,8 @@ helm search repo jetstack/cert-manager -l
 Install the Certificate Manager:
 
 ```shell
-helm install cert-manager jetstack/cert-manager  \
-       --namespace cert-manager --create-namespace --version v1.10.2 --set installCRDs=true
+helm install --create-namespace --namespace cert-manager cert-manager jetstack/cert-manager  \
+            --version v1.10.2 --set installCRDs=true
 ```
 
 Verify the Certificate Manager installation:
