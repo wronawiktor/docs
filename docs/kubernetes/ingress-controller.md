@@ -123,18 +123,13 @@ Create the Ingress resource by running the following command:
 kubectl apply -f ingress-hello.yaml
 ```
 
-Verify if the IP address is set:
+Verify on which node ingress-nginx is running:
 
 ```shell
-kubectl get ingress -n webapp
+kubectl get pods -n ingress-nginx -o wide
 ```
 
-Note: This can take a couple of minutes.
-
-```
-NAME              CLASS    HOSTS              ADDRESS        PORTS   AGE
-ingress-hello     <none>   hello-world.nc     IP_ADDRESS     80      38s
-```
+Use worker IP and then set /etc/hosts.
 
 Add the following line to the bottom of the /etc/hosts file.
 
