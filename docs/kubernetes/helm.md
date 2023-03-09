@@ -185,22 +185,22 @@ Edit `deployment.yaml` manifest:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: myapp
-  name: {{ .Release.Name }}
+  labels:
+    app: myapp
+  name: {{ .Release.Name }}
 spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app: myapp
-  template:
-    metadata:
-      labels:
-        app: myapp
-    spec:
-      containers:
-      - image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
-        name: myapp
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
+        name: myapp
 ```
 
 Go to main `myapp` directory
