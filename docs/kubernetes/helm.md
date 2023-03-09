@@ -273,6 +273,6 @@ Check list deployment and pod list:
 
 ```shell
 kubectl get deploy,rs,pods -n myapp
-kubectl logs -n myapp -l app=myappS
+kubectl logs -n myapp -l app=myapp
 ```
 
