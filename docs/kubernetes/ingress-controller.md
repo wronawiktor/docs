@@ -285,7 +285,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          class:  nginx
+          class: nginx
 ```
 
 ```yaml title="issuer-production.yaml"
