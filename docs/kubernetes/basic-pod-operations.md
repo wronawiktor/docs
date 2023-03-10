@@ -2,11 +2,11 @@
 sidebar_position: 5
 ---
 
-# Basic Pod operations
+# Basic Pods operations
 
 Basic operations with Pods
 
-## Check the Pod status 
+## Check Pods status 
 
 Check the list of Namespaces:
 
@@ -84,7 +84,7 @@ kubectl delete ns app
 
 ## Generate a Pod template
 
-Create a new namespace:
+Create a new Namespace:
 
 ```shell
 kubectl create ns frontend
@@ -109,10 +109,16 @@ Apply the Pod manifest to a cluster:
 kubectl apply -f pod-webapp.yaml
 ```
 
-Verify the operation on the cluster"
+Verify the operation on the cluster:
 
 ```shell
 kubectl get pods -n frontend -o wide
+```
+
+Get logs from `webapp` Pod container:
+
+```shell
+kubectl get logs -n frontend webapp
 ```
 
 Cleanup the environment 

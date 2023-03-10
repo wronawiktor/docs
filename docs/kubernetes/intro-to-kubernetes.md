@@ -6,22 +6,23 @@ sidebar_position: 2
 
 Basic **Kubernetes** client commands to check first
 
-## `kubectl` basic commands
+## Basic commands for kubectl
 
-Run `Kubernetes` basic commands:
+Run `kubectl` basic commands:
 
 ```shell
 kubectl cluster-info
 kubectl get nodes
 kubectl get nodes -o wide
 kubectl describe nodes
+kubectl get namespaces
 kubectl get ns
 kubectl get pods --namespace kube-system
-kubectl get pods --namespace kube-system -o wide
+kubectl get pods -n kube-system -o wide
 kubectl get pods --all-namespaces
 kubectl get pods -A -o wide
-kubectl describe pods
-kubectl get events
+kubectl describe pods -n kube-system
+kubectl get events --all-namespaces
 kubectl get events --sort-by='.lastTimestamp' -A
 kubectl api-resources
 kubectl explain pod
@@ -39,6 +40,12 @@ kubectl get nodes --show-labels
 kubectl label node worker2 disk=ssd
 ```
 
+Show labels once again and try to find label `disk=ssd`:
+
+```shell
+kubectl get nodes --show-labels
+```
+
 Remove label from node:
 
 ```shell
@@ -47,34 +54,34 @@ kubectl label node worker2 disk-
 
 ## Learn how to generate example `yaml` manifests
 
-Generate pod `yaml` template manifest:
+Generate Pod `yaml` template manifest:
 
 ```shell
 kubectl run test --image=nginx --dry-run -o yaml
 ```
 
-Generate deployment `yaml` template manifest:
+Generate Deployment `yaml` template manifest:
 
 ```shell
 kubectl create deployment nginx --image=nginx --dry-run -o yaml
 ```
 
-Generate service `yaml` template service manifest:
+Generate Service `yaml` template service manifest:
 
 ```shell
 kubectl create service clusterip my-service --tcp=8080 --dry-run -o yaml
 ```
 
-## Start first pod containers
+## How to dry run Pod containers
 
-Start example `busybox` pod container from command line:
+Start example `busybox` Pod container from command line:
 
 ```shell
-kubectl run busybox --image=busybox -- sleep 3600
+kubectl run busybox --image=busybox --dry-run=client -- sleep 3600
 ```
 
-Start example `debian` pod container command line:
+Start example `debian` Pod container from command line:
 
 ```shell
-kubectl run test --image=debian -- sleep 3600
+kubectl run test --image=debian --dry-run=server -- sleep 3600
 ```

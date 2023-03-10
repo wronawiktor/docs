@@ -48,15 +48,7 @@ Apply the ConfigMap manifest:
 kubectl apply -f cm-myapp.yaml
 ```
 
-Generate a `myapp` Deployment:
-
-```shell
-kubectl create deployment -n myapp myapp \
-        --image=ghcr.io/go4clouds/myapp:v2.0 \
-        --replicas=3 --dry-run -o yaml > deploy-myapp.yaml
-```
-
-Edit the Deployment template manifest for `myapp`: 
+Create Deployment manifest for `myapp`:
 
 ```yaml title="deploy-myapp.yaml"
 apiVersion: apps/v1

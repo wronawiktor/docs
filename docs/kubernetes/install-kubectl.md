@@ -11,9 +11,9 @@ Install the Kubernetes client `kubectl`
 After **Kubernetes** cluster installation, get a `kubectl` command line tool based on instructions from the documentation [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl).
 
 
-## Get the **KUBECONFIG** credentials file
+## Get **KUBECONFIG** credentials file
 
-After the `kubectl` installation get the **KUBECONFIG** file:
+After the `kubectl` installation get **KUBECONFIG** file:
 
 ```shell
 mkdir $HOME/.kube
@@ -21,7 +21,7 @@ scp root@cp1:/etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-Check the connection to the **Kubernetes** cluster:
+Check the connection to **Kubernetes** cluster:
 
 ```shell
 kubectl cluster-info
@@ -138,7 +138,7 @@ Or by running the following command in bash
 
 **Wohoo!** Your nano text editor should now be ready to go! 
 
-## Check the **KUBECONFIG** configuration
+## Check **KUBECONFIG** configuration
 
 Check the current **KUBECONFIG** config:
 

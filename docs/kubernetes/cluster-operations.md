@@ -6,9 +6,9 @@ sidebar_position: 3
 
 Basic **Kubernetes** cluster operations
 
-## Check the **Kubernets** cluster status
+## Check **Kubernets** cluster status
 
-Get the Kubernetes cluster nodes list:
+Get Kubernetes cluster nodes list:
 
 ```shell
 kubectl get nodes
