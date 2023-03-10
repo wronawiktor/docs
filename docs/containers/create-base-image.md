@@ -6,47 +6,43 @@ sidebar_position: 4
 
 Create a simple base image with a minimal Linux installation
 
-Create a project work directory:
+Install `debootstrap` package:
 
 ```shell
-mkdir -p webapp/src
-cd webapp
+sudo apt-get install debootstrap
 ```
 
-Create an index website at `src/index.html`:
+Check [Debian Release](https://www.debian.org/releases/) and [Ubuntu Release](https://wiki.ubuntu.com/Releases) names and choose your favorite release.
 
-```html title="src/index.html"
-<h1>Hello world!</h1>
-```
-
-Create a `Dockerfile` manifest:
-
-```docker title="./Dockerfile"
-FROM busybox
-
-ADD src/index.html /www/index.html
-
-EXPOSE 8080
-
-CMD httpd -p 8080 -h /www; tail -f /dev/null
-```
-
-Build a container image:
+In terminal install Debian or Ubuntu in chroot directory
 
 ```shell
-docker build -f Dockerfile -t webapp .
+sudo debootstrap bullseye bullseye
 ```
 
-Start the container with the `hello-world` website:
+After installation will finish, check status of it:
 
 ```shell
-docker run -d -p 80:8080 webapp
+cd bullseye
+ls -ltrah
+cd ..
 ```
 
-Test the `hello-world` website using `curl` command:
+Now we can load Debian Bullseye as Docker image:
 
 ```shell
-curl http://127.0.0.1
+sudo tar -C bullseye -c . | docker import - bullseye
 ```
 
-The `hello-world` page is now available at [http://127.0.0.1](http://127.0.0.1)
+Check list of Docker images:
+
+```shell
+docker images
+```
+
+Now we can start Debian Bullseye container image:
+
+```shell
+docker run -d --name bullseye bullseye sleep 3600
+docker exec -ti bullseye bash
+```
