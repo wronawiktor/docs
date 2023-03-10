@@ -214,13 +214,13 @@ Check Deployment status:
 
 ```shell
 kubectl get deploy,rs,pods -n webapp
-kubectl rollout status deployment -n webapp webapp
+kubectl get events --sort-by='.lastTimestamp' -n webapp
 ```
 
-Rollback changes for Deployment:
+Rollback changes for Deployment, because previous update is broken due to non exsisting image `nginx:1.24.3-NON-EXISTING`:
 
 ```shell
-kubectl rollout undo deployment -n webapp webapp
+kubectl rollout undo deployment -n webapp webapp 
 ```
 
 ## Enable autoscaling
