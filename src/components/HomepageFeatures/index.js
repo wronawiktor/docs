@@ -28,7 +28,7 @@ const FeatureList = [
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        This Kubernetes documentation tutorial project is real OpenSource. 
+        This Kubernetes tutorial is real OpenSource community project.
         You can find it on github and help with development. Help yourself and 
         other people to learn and understand Kubernetes better.
       </>

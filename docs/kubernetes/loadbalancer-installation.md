@@ -1,5 +1,5 @@
 ---
-sidebar_position: 12
+sidebar_position: 13
 ---
 
 # Install Load Balancer
@@ -66,6 +66,7 @@ helm list -n metallb
 
 Note: [Bare-metal consideration](https://kubernetes.github.io/ingress-nginx/deploy/baremetal)
 
+Note: To do this task you have to install first NGINX Ingress Controller from preious chapter!
 
 Tell NGINX Ingress Controller to stop using host network:
 
