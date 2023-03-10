@@ -66,7 +66,7 @@ helm list -n metallb
 
 Note: [Bare-metal consideration](https://kubernetes.github.io/ingress-nginx/deploy/baremetal)
 
-Note: To do this task you have to install first NGINX Ingress Controller from preious chapter!
+Note: To do this task you have to install first NGINX Ingress Controller from previous chapter!
 
 Tell NGINX Ingress Controller to stop using host network:
 
