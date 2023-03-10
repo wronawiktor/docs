@@ -24,12 +24,13 @@ const FeatureList = [
     ),
   },
   {
-    title: 'Powered by OpenSource',
+    title: 'True OpenSource Project',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your Kubernetes cluster by customize it. Kubernetes is extremelly 
-        flexible and can used everywhere.
+        This Kubernetes documentation tutorial project is real OpenSource. 
+        You can find it on github and help with development. Help yourself and 
+        other people to learn and understand Kubernetes better.
       </>
     ),
   },

@@ -2,7 +2,7 @@
 sidebar_position: 20
 ---
 
-# Helm
+# Learn Helm
 
 Learn how to use Helm to install any application on Kubernetes
 
@@ -137,7 +137,7 @@ helm status -n test example
 helm history -n test example
 ```
 
-To check image version we can use:
+To check image version and status application we can use:
 
 ```shell
 kubectl get deploy,rs,pods -n test -o wide
