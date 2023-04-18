@@ -118,7 +118,7 @@ kubectl get pods -n frontend -o wide
 Get logs from `webapp` Pod container:
 
 ```shell
-kubectl get logs -n frontend webapp
+kubectl logs -n frontend webapp
 ```
 
 Cleanup the environment 
