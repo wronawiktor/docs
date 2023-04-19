@@ -23,8 +23,8 @@ kubectl create ns benchmark
 Create a Pod template manifest with a stress tool in it: 
 
 ```shell
-kubectl run -n benchmark stress --image=polinux/stress --dry-run=client -o yaml \
-                                -- stress --vm 1 --vm-bytes 150M --vm-hang 1 > pod-stress.yaml
+kubectl run -n benchmark stress --image=vish/stress --dry-run=client -o yaml \
+                                -- -cpus 1 --mem-total 350Mi -mem-alloc-size 100Mi -mem-alloc-sleep 5s > pod-stress.yaml
 ```
 
 Edit the `pod-stress.yaml` manifest to get:
@@ -38,16 +38,23 @@ metadata:
 spec:
   containers:
   - name: stress
-    image: polinux/stress
+    args: 
+    - -cpus
+    - "1"
+    - -mem-total
+    - "350Mi"
+    - -mem-alloc-size
+    - "100Mi" 
+    - -mem-alloc-sleep
+    - "5s"
+    image: vish/stress
     resources:
       requests:
         cpu: "500m"
         memory: "100Mi"
       limits:
         cpu: "1"
-        memory: "200Mi"
-    command: ["stress"]
-    args: ["--vm", "1", "--vm-bytes", "150M", "--vm-hang", "1"]
+        memory: "300Mi"
 ```
 
 Apply the Pod manifest and create it:
