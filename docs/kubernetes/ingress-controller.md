@@ -275,7 +275,6 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
-  namespace: webapp
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
@@ -293,7 +292,6 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-production
-  namespace: webapp
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
@@ -315,10 +313,10 @@ kubectl apply -f issuer-production.yaml
 
 Both of these issuers are configured to use the `HTTP01` challenge provider.
 
-Check on the status of the issuer after you create it:
+Check on the status of the clusterissuer after you create it:
 
 ```shell
-kubectl describe -n webapp issuer letsencrypt-staging
+kubectl describe -n webapp clusterissuer letsencrypt-staging
 ```
 
 Now we can tell Ingress NGINX to use Certificate Manager Issuer to secure communication:
