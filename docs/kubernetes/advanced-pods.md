@@ -24,7 +24,7 @@ Create a Pod template manifest with a stress tool in it:
 
 ```shell
 kubectl run -n benchmark stress --image=vish/stress --dry-run=client -o yaml \
-                                -- -cpus 1 --mem-total 350Mi -mem-alloc-size 100Mi -mem-alloc-sleep 5s > pod-stress.yaml
+                                -- -cpus 1 -mem-total 350Mi -mem-alloc-size 100Mi -mem-alloc-sleep 5s > pod-stress.yaml
 ```
 
 Edit the `pod-stress.yaml` manifest to get:
@@ -73,12 +73,6 @@ After a few seconds check resource usage:
 
 ```shell
 kubectl top pods -n benchmark
-```
-
-Try to run another `stress` application intance inside a container to test resource limits:
-
-```shell
-kubectl exec -ti stress -n benchmark -- stress --vm 1 --vm-bytes 100M
 ```
 
 Check the Pod status:
