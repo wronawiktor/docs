@@ -38,16 +38,16 @@ sudo exportfs -ra
 On **all*** Kubernetes nodes install `nfs-common` package:
 
 ```shell
-for SRV in cp{1,2,3} worker{1,2,3} ; do
-ssh root@$SRV apt-get install nfs-common -y
+for SRV in cp1 worker{1,2,3}; do
+sudo ssh $SRV apt-get install nfs-common -y;
 done
 ```
 
 Check if nodes can connect to shares:
 
 ```shell
-for SRV in cp{1,2,3} worker{1,2,3}; do
-ssh root@$SRV showmount -e k8scp
+for SRV in cp1 worker{1,2,3}; do
+sudo ssh $SRV showmount -e k8scp;
 done
 ```
 
