@@ -59,8 +59,8 @@ curl http://127.0.0.1:8080
 Try to connect application from cluster nodes:
 
 ```shell
-for SRV in cp{1,2,3} worker{1,2,3}; do
-ssh $SRV curl http://<ClusterIP>
+for SRV in cp1 worker{1,2,3}; do
+sudo ssh $SRV curl http://<ClusterIP>;
 done
 ```
 
@@ -160,8 +160,8 @@ or on all nodes
 
 ```shell
 NODEPORT=`kubectl get svc -n frontend web -o jsonpath="{.spec.ports[0].nodePort}"`
-for SRV in cp{1,2,3} worker{1,2,3}; do
-curl http://$SRV:$NODEPORT
+for SRV in cp1 worker{1,2,3}; do
+sudo curl http://$SRV:$NODEPORT;
 done
 ```
 
