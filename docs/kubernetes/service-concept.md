@@ -60,7 +60,7 @@ Try to connect application from cluster nodes:
 
 ```shell
 for SRV in cp1 worker{1,2,3}; do
-sudo ssh $SRV curl http://<ClusterIP>;
+sudo ssh $SRV curl http://<ClusterIP>:8080;
 done
 ```
 
