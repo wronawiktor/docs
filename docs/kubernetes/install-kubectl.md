@@ -84,6 +84,7 @@ syntax on
 filetype indent plugin on
 " Show column and line number
 set ruler
+set number
 ```
 
 ## Configure the `nano` text editor
