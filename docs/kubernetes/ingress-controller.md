@@ -240,7 +240,7 @@ Install the Certificate Manager:
 
 ```shell
 helm install --create-namespace --namespace cert-manager cert-manager jetstack/cert-manager  \
-            --version v1.10.2 --set installCRDs=true
+            --version v1.12.6 --set installCRDs=true
 ```
 
 Verify the Certificate Manager installation:
