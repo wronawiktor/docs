@@ -158,9 +158,9 @@ metadata:
   name: frontend-ingress
   namespace: front-web
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: front-web.info
       http:

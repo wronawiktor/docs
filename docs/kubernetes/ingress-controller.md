@@ -101,9 +101,8 @@ kind: Ingress
 metadata:
   name: ingress-hello
   namespace: webapp
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: hello-world.nc
       http:
@@ -328,9 +327,9 @@ metadata:
   name: ingress-hello
   namespace: webapp
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: letsencrypt-staging
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: web<LAB_ID>.go4clouds.net
       http:
