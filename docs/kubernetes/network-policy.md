@@ -629,7 +629,7 @@ Apply Network Policy:
 kubectl apply -f allow-frontend-redis.yaml
 ```
 
-Check connection using Webbrowser:
+Check connection using Web browser:
 
 ```
 http://<EXTERNALIP>
