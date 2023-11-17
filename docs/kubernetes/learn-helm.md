@@ -63,7 +63,7 @@ helm create example
 Check Helm chart package directory structure:
 
 ```shell
-apt-get install tree
+sudo apt-get install tree
 tree example
 ```
 
