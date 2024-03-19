@@ -4,7 +4,9 @@ sidebar_position: 1
 
 # Introduction to Docker
 
-Basic `docker` commands to learn first
+## Basic `docker` commands to learn first
+
+*For Docker installation guide, visit: https://docs.docker.com/engine/install/*
 
 After `docker` installation add your account to a docker group
 
