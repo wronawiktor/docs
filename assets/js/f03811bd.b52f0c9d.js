@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkgo_4_clouds=self.webpackChunkgo_4_clouds||[]).push([[7899],{1302:s=>{s.exports=JSON.parse('{"label":"hola","permalink":"/docs/blog/tags/hola","allTagsPath":"/docs/blog/tags","count":1}')}}]);
