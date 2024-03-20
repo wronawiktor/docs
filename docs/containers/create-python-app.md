@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Create python application
 
-Create a simple Python application with Flask
+## Create a simple Python application with Flask
 
 
 Install required packages:
@@ -13,14 +13,14 @@ Install required packages:
 apt install python3 python3-pip git-core
 ```
 
-Set an application working directory:
+Set the working directory for an application:
 
 ```shell
 mkdir -p myapp/src
 cd myapp
 ```
 
-Write the main application `main.py` file:
+Write the main application into the file `main.py`:
 
 ```python title="src/main.py"
 from flask import Flask
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     app.run(host='0.0.0.0',port=8081)
 ```
 
-Create requirements file with dependencies:
+Create a requirements file that includes all necessary dependencies in `src/requirements.txt`:
 
 ```txt title="src/requirements.txt"
 Flask
@@ -46,13 +46,13 @@ Install Python required modules:
 pip3 install -r src/requirements.txt
 ```
 
-Start the application and test it locally:
+Start the application and then test it locally:
 
 ```shell
 python3 src/main.py
 ```
-
-Output:
+<details>
+<summary>Output</summary>
 
 ```shell
  * Serving Flask app 'main' (lazy loading)
@@ -64,14 +64,17 @@ Output:
    WARNING: This is a development server. Do not use it in a production deployment.
  * Running on http://172.16.4.253:8081/ (Press CTRL+C to quit)
 ```
+</details>
+<br>
 
-In another terminal test the application HTTP response:
+In another terminal, test the HTTP response of the application:
 
 ```shell
 curl http://0.0.0.0:8081
 ```
+## Create a simple container that includes your application
 
-Create a container file manifest:
+Create a container file manifest in the `myapp` directory.:
 
 ```Dockerfile title="./Dockerfile"
 FROM registry.opensuse.org/opensuse/leap:15.3
@@ -99,13 +102,14 @@ git commit -m "Initial commit" -a
 git log
 ```
 
-Finally build a cointainer image:
+Finally, build a cointainer image:
 
 ```shell
 docker build -f Dockerfile -t myapp:v1.0 .
 ```
 
-Output:
+<details>
+  <summary>Output</summary>
 
 ```shell
 Sending build context to Docker daemon  4.096kB
@@ -163,26 +167,31 @@ Removing intermediate container 16e8e13f9a28
 Successfully built 14303156d868
 Successfully tagged myapp:v1.0
 ```
+</details>
 
-Start the container with the python application:
+## Running the container
+
+Start the container that has the Python application:
 
 ```shell
 docker run -p 8081:8081 myapp:v1.0
 ```
 
-Prepare the container image for publishing. Update the container image tag and add a repository name:
+## Publish the image of the container
+
+Prepare the container image for publishing by updating its tag and adding a repository name:
 
 ```shell
 docker tag myapp:v1.0 ttl.sh/myapp-v1.0:8h
 ```
 
-Push the container image to [ttl.sh](https://ttl.sh) an annonymous container registry:
+Push the container image to [ttl.sh](https://ttl.sh), which is an anonymous container registry:
 
 ```shell
 docker push ttl.sh/myapp-v1.0:8h
 ```
 
-Now when the container image was published, it can be used everywhere. The container starts with the following command:
+Now that the container image has been published, it can be used anywhere. The container can be started with the following command:
 
 ```shell
 docker run ttl.sh/myapp-v1.0:8h
