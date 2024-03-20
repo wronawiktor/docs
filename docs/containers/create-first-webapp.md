@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Create first application
 
-Create a simple hello-world application
+## Create a simple hello-world application
 
 Create a project work directory:
 
@@ -19,7 +19,7 @@ Create an index website at `src/index.html`:
 <h1>Hello world!</h1>
 ```
 
-Create a `Dockerfile` manifest:
+Create a `Dockerfile` manifest in the `webapp`:
 
 ```docker title="./Dockerfile"
 FROM busybox
@@ -42,11 +42,15 @@ Start a container with the `hello-world` website:
 ```shell
 docker run -d -p 8081:8080 webapp
 ```
+The `hello-world` page is now available at [http://127.0.0.1:8081](http://127.0.0.1:8081)
 
 Test the `hello-world` website using the `curl` command:
 
 ```shell
 curl http://127.0.0.1:8081
 ```
+Aftrer this you can kill container using:
+```shell
+docker stop (<container_ID> or <container_name>)
+```
 
-The `hello-world` page is now available at [http://127.0.0.1:8081](http://127.0.0.1:8081)
