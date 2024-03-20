@@ -577,7 +577,7 @@ Output:
 
 Last step is to allow connection from frontend application to redis instances:
 
-```yaml title="allow-fronted-redis.yaml"
+```yaml title="allow-frontend-redis.yaml"
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -626,10 +626,10 @@ spec:
 Apply Network Policy:
 
 ```shell
-kubectl apply -f allow-fronted-redis.yaml
+kubectl apply -f allow-frontend-redis.yaml
 ```
 
-Check connection using Webrowser:
+Check connection using Web browser:
 
 ```
 http://<EXTERNALIP>
