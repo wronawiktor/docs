@@ -4,7 +4,7 @@ sidebar_position: 9
 
 # Congratulations!
 
-You have just learned the **basics of Docker**
+You have just learned the **basics of Docker**!
 
 Containers have **much more to offer**!
 
