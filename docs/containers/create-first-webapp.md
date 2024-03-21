@@ -49,8 +49,15 @@ Test the `hello-world` website using the `curl` command:
 ```shell
 curl http://127.0.0.1:8081
 ```
-Aftrer this you can kill container using:
+Aftrer this you can kill container:
+
+- stop container using name:
 ```shell
-docker stop (<container_ID> or <container_name>)
+docker stop webapp
+```
+
+- or using container ID:
+```shell
+docker stop $(docker ps -q -f name=webapp)
 ```
 
