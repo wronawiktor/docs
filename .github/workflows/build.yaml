@@ -1,0 +1,20 @@
+name: Test build
+
+on:
+  pull_request:
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout docs repo
+        uses: actions/checkout@v2
+      - name: Setup Docusaurus
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: yarn
+      - name: Test build website
+        run: |
+          yarn install --frozen-lockfile
+          yarn build
