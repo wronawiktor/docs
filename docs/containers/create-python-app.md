@@ -65,7 +65,6 @@ python3 src/main.py
  * Running on http://172.16.4.253:8081/ (Press CTRL+C to quit)
 ```
 </details>
-<br>
 
 In another terminal, test the HTTP response of the application:
 
@@ -107,7 +106,6 @@ Finally, build a cointainer image:
 ```shell
 docker build -f Dockerfile -t myapp:v1.0 .
 ```
-
 <details>
   <summary>Output</summary>
 
