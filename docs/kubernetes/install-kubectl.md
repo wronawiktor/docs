@@ -8,7 +8,7 @@ Install the Kubernetes client `kubectl`
 
 ## Download the kubectl client
 
-After **Kubernetes** cluster installation, get a `kubectl` command line tool based on instructions from the documentation [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl).
+After installing the **Kubernetes** cluster, obtain a `kubectl` command line tool following the instructions from the [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) documentation. 
 
 
 ## Get **KUBECONFIG** credentials file
@@ -61,9 +61,9 @@ source <(kubectl completion bash)
 
 ## Configure the `vim` text editor
 
-Next up, let's configure the  text editor, which you will be using for editing **Kubernetes** `yaml` manifests.
+Next, let's configure the text editor that you will use for editing **Kubernetes** `yaml` manifests.
 
-The `vim` text editor is a minimalistic text editor that is often available even in bare-bones deployment, which is why we are recommending it. However, it is often considered to be complicated and non-intuitive for developers that are fairly new to the command line. As an alternative to  `vim`, you can consider the GNU `nano` text editor, which is described in the next section.
+The `vim` text editor is a minimalist text editor that is often available even in bare-bones deployments, which is why we recommend it. However, it is often considered complicated and non-intuitive for developers fairly new to the command line. As an alternative to `vim`, you can consider the GNU `nano` text editor, which is described in the next section.
 
 If you have chosen to stick with `vim`, create a **Vim** custom configuration file:
 
@@ -89,9 +89,9 @@ set number
 
 ## Configure the `nano` text editor
 
-As an alternative to  `vim`,  the GNU `nano` text editor is a lightweight and versatile terminal-based text editor. 
+As an alternative to  `vim`, the GNU `nano` text editor is a lightweight and versatile terminal-based text editor. 
 
-In order to use `nano` to edit **Kubernetes** `yaml` manifest, we need to edit the configuration file, located at `$HOME/.nanorc` 
+In order to use `nano` to edit **Kubernetes** `yaml` manifest, we need to edit the configuration file, located at `$HOME/.nanorc`:
 
 ```txt title="$HOME/.nanorc"
 # Sets tabstop to 2 for working with YAML
@@ -102,7 +102,7 @@ set tabstospaces
 set linenumbers
 ```
 
-This can also be done automatically using the pipe and tee operators in bash, by running the follwing commands.
+This can also be done automatically using the pipe and tee operators in bash, by running the follwing commands:
 
 ```txt title="bash"
  echo "set tabsize 2" | tee -a ~/.nanorc
@@ -112,9 +112,9 @@ This can also be done automatically using the pipe and tee operators in bash, by
 
 ### Adding syntax highlighting for YAML-files 
 
-In addition it can be useful with syntax highlighting for `yaml` files. To achieve this we first need a `.nanorc` file to tell nano how to handle the `yaml` manifests.
+Additionally, syntax highlighting for `yaml` files can be useful. To achieve this, we first need a `.nanorc` file to instruct nano on how to handle `yaml` manifests.
 
-Create a file in `$HOME/.nano/` named `yaml.nanorc` and copy the following
+Create a file in `$HOME/.nano/` named `yaml.nanorc` and paste the following:
 
 ```txt title="$HOME/.nano/yaml.nanorc"
 syntax "YUM" "\.repo$|yum.*\.conf$"
@@ -126,12 +126,12 @@ color ,green "[[:space:]]+$"
 color ,red "	+ +| +	+"
 ```
 
-Then ensure that the config is included in the include `$HOME/.nanorc` file by adding the following
+Then, ensure that the config is included in the `$HOME/.nanorc` file by adding the following:
 ```txt title=$HOME/.nanorc"
 include "~/.nano/yaml.nanorc"
 ```
 
-Or by running the following command in bash
+or by running the following command in bash:
 
 ```txt title="bash"
  echo "include '~/.nano/yaml.nanorc'" | tee -a ~/.nanorc
@@ -152,7 +152,7 @@ kubectl config current-context
 kubectl get pods
 ```
 
-Set example cluster adminstrator context:
+Set an example cluster adminstrator context:
 
 ```shell
 kubectl config set-context kube-system-admin --cluster=kubernetes  --user=kubernetes-admin --namespace=kube-system
