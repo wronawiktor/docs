@@ -6,27 +6,27 @@ sidebar_position: 3
 
 Basic **Kubernetes** cluster operations
 
-## Check **Kubernets** cluster status
+## Check the **Kubernets** cluster status
 
-Get Kubernetes cluster nodes list:
+Get a list of Kubernetes cluster nodes:
 
 ```shell
 kubectl get nodes
 ```
 
-Run again the previous command with a new option `-o wide` and compare outputs:
+Run the previous command again with a new `-o wide` option and compare the outputs:
 
 ```shell
 kubectl get nodes -o wide
 ```
 
-Check the node description for the control plane node `cp1`:
+Check the description of the control plane node `cp1`:
 
 ```shell
 kubectl describe node cp1
 ```
 
-Check the node description for `worker1`:
+Check the description for the node `worker1`:
 
 ```shell
 kubectl describe node worker1
@@ -40,20 +40,20 @@ Show labels for nodes:
 kubectl get nodes --show-labels
 ```
 
-Change a role name for data plane nodes:
+Change the role name for data plane nodes:
 
 ```shell
 kubectl label node worker1 node-role.kubernetes.io/worker=
 kubectl label node worker2 node-role.kubernetes.io/worker=
 ```
 
-or use a simple script to do this change for all workers:
-
-```shell
-for SRV in worker{1,2,3}; do
-kubectl label node $SRV node-role.kubernetes.io/worker=
-done
-```
+> or use a simple script to make this change for all workers:
+>
+>```shell
+>for SRV in worker{1,2,3}; do
+>kubectl label node $SRV node-role.kubernetes.io/worker=
+>done
+>```
 
 Check nodes labels:
 
@@ -62,7 +62,7 @@ kubectl get nodes
 kubectl get nodes --show-labels
 ```
 
-## Configure node taints
+## Configure node taints and cordons
 
 Check node taints for a cluster:
 
@@ -70,13 +70,13 @@ Check node taints for a cluster:
 kubectl describe nodes | grep Taints
 ```
 
-Disable worker1 from scheduling:
+Disable scheduling for `worker1`:
 
 ```shell
 kubectl taint node worker1 node-role.kubernetes.io/worker=:NoSchedule
 ```
 
-Check node taints once again:
+Check the node taints once again:
  
 ```shell
 kubectl describe nodes | grep Taints
@@ -88,13 +88,13 @@ Check the cluster status:
 kubectl get nodes
 ```
 
-Remove the node taint from worker1:
+Remove the node taint from `worker1`:
 
 ```shell
 kubectl taint node worker1 node-role.kubernetes.io/worker-
 ```
 
-Repeat this opeation but this time use the `cordon` subcommand:
+Repeat this operation, but this time use the `cordon` subcommand:
 
 ```shell
 kubectl cordon worker1
@@ -116,7 +116,7 @@ Annotate the `cp1` node:
 kubectl annotate node cp1 description="This is Kubernetes control plane node!"
 ``` 
 
-Check the annotations section:
+Check the section of annotations:
 
 ```shell
 kubectl describe node cp1
