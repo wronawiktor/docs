@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Basic Pods operations
 
-Basic operations with Pods
+Basic Operations with Pods
 
 ## Check Pods status 
 
@@ -61,7 +61,7 @@ Check the Pod status and wait until the status changes to `Running`:
 kubectl get pod -n app app -o wide -w
 ``` 
 
-Check logs of the `app` Pod container;
+Check the logs of the `app` Pod container;
 
 ```shell
 kubectl logs -n app app
@@ -75,7 +75,7 @@ kubectl exec -n app -ti app -- sh
 # exit
 ```
 
-Cleanup the `app` Pod:
+Clean up the `app` Pod:
 
 ```shell
 kubectl delete pod -n app app
@@ -102,6 +102,28 @@ Save the Pod template as the `yaml` manifest:
 ```shell
 kubectl run webapp -n frontend --image=nginx:1.22 --dry-run=client -o yaml > pod-webapp.yaml
 ```
+<details>
+<summary>See `pod-webapp.yaml` </summary>
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: webapp
+  name: webapp
+  namespace: frontend
+spec:
+  containers:
+  - image: nginx:1.23.3
+    name: webapp
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+```
+</details>
 
 Apply the Pod manifest to a cluster:
 
@@ -115,13 +137,13 @@ Verify the operation on the cluster:
 kubectl get pods -n frontend -o wide
 ```
 
-Get logs from `webapp` Pod container:
+Retrieve logs from the `webapp` Pod container:
 
 ```shell
 kubectl logs -n frontend webapp
 ```
 
-Cleanup the environment 
+Clean up the environment: 
 
 ```shell
 kubectl delete namespace frontend
