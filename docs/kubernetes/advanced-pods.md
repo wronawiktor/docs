@@ -14,13 +14,13 @@ Check the list of namespaces:
 kubectl get ns
 ```
 
-Create a new `benchmark` Namespace for Pod instance:
+Create a new `benchmark` Namespace for the Pod instance:
 
 ```shell
 kubectl create ns benchmark
 ```
 
-Create a Pod template manifest with a stress tool in it: 
+Create a Pod template manifest with a stress tool included: 
 
 ```shell
 kubectl run -n benchmark stress --image=vish/stress --dry-run=client -o yaml \
@@ -69,7 +69,7 @@ View detailed information about the Pod:
 kubectl get pod -n benchmark stress -o wide
 ```
 
-After a few seconds check resource usage:
+Check resource usage after a few seconds:
 
 ```shell
 kubectl top pods -n benchmark
@@ -88,7 +88,7 @@ NAME     READY   STATUS    RESTARTS      AGE
 stress   1/1     Running   1 (25s ago)   95s
 ```
 
-Now check Pod details and try to find out why it was restarted:
+Now, check the Pod details and try to find out why it was restarted:
 
 ```shell
 kubectl describe pod -n benchmark stress
@@ -115,7 +115,7 @@ Namespace:    benchmark
 ```
 
 
-Cleanup the environment:
+Clean up the environment:
 
 ```shell
 kubectl delete ns benchmark
@@ -156,7 +156,7 @@ spec:
       protocol: TCP
 ```
 
-Apply the `myapp` Pod manfiest to the cluster:
+Apply the `myapp` Pod manifest to the cluster:
 
 ```shell
 kubectl apply -f pod-myapp.yaml
@@ -168,7 +168,7 @@ Check the Pod status and wait until the status changes to `Running`:
 kubectl get pod -n myapp myapp -o wide
 ``` 
 
-Check logs of the `myapp` pod container;
+Check the logs of the `myapp` Pod container:
 
 ```shell
 kubectl logs -n myapp myapp
@@ -180,7 +180,7 @@ Open a tunnel connection to the `myapp` pod container:
 kubectl port-forward -n myapp pod/myapp 8081:8081
 ```
 
-In another terminal test the connection:
+Test the connection in another terminal:
 
 ```shell
 curl http://127.0.0.1:8081
@@ -190,7 +190,7 @@ curl http://127.0.0.1:8081
 
 We would like to extend the previous example and add liveness and readiness probes to it.
 
-Update the `myapp` Pod manifest example with liveness probe:
+Update the `myapp` Pod manifest example with a liveness probe:
 
 ```yaml title="pod-myapp.yaml"
 apiVersion: v1
@@ -222,7 +222,7 @@ spec:
       periodSeconds: 5
 ```
 
-Save the changes and clenup the already running Pod instance:
+Save the changes and clean up the already running Pod instance:
 
 ```shell
 kubectl delete -f pod-myapp.yaml
@@ -257,7 +257,7 @@ Events:
   Normal   Killing    12s (x2 over 47s)  kubelet            Container myapp failed liveness probe, will be restarted
 ```
 
-The Pod was restarted because the check couldn't succeed as the application is listening on port `8081`.
+The pod was restarted because the check couldn't succeed since the application is listening on port `8081`.
 
 Let's fix the configuration:
 
@@ -291,7 +291,7 @@ spec:
       periodSeconds: 5
 ```
 
-Save the changes and clenup the already running Pod instance:
+Save the changes and clean up the already running Pod instance:
 
 ```shell
 kubectl delete -f pod-myapp.yaml
@@ -310,7 +310,7 @@ kubectl get pods -n myapp
 kubectl describe pod -n myapp myapp
 ```
 
-Cleanup the `myapp` Pod:
+Clean up the `myapp` Pod:
 
 ```shell
 kubectl delete ns myapp
