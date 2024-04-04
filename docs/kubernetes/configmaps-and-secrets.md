@@ -20,13 +20,13 @@ Create a new `myapp` Namespace for a Pod instance:
 kubectl create ns myapp
 ```
 
-Create ConfigMap with application data:
+Create a ConfigMap with application data:
 
 ```shell
 kubectl create configmap -n myapp myapp \
         --from-literal=port="8083" \
         --from-literal=message="This is my own MyAPP message v2.X!" \
-        --dry-run -o yaml > cm-myapp.yaml
+        --dry-run=client -o yaml > cm-myapp.yaml
 ```
 
 Check the ConfigMap `myapp` manifest:
@@ -82,13 +82,13 @@ spec:
               key: message
 ```
 
-Apply the Deployment `deploy-myapp.yaml` manifest:
+Apply the `deploy-myapp.yaml` Deployment manifest:
 
 ```shell
 kubectl apply -f deploy-myapp.yaml
 ```
 
-Check the Deploymnet,ReplicaSet and Pod status:
+Check the Deploymnet, ReplicaSet and Pod status:
 
 ```shell
 kubectl get deploy,rs,pods -n myapp -o wide
@@ -100,13 +100,13 @@ Open a tunnel connection to any Pod instance:
 kubectl port-forward -n myapp pod/myapp-<POD_ID> 8083:8083
 ```
 
-In a new terminal check the application response:
+Check the application response in a new terminal:
 
 ```shell
 curl http://127.0.0.1:8083
 ```
 
-To cleanup remove the whole Namespace:
+To clean up, remove the entire Namespace:
 
 ```shell
 kubectl delete ns myapp
@@ -126,7 +126,7 @@ Create a new `webapp` Namespace for a web application:
 kubectl create ns webapp
 ```
 
-Create a virtual host configuration for NGINX server: 
+Create a virtual host configuration for NGINX server in `webapp.conf`: 
 
 ```conf title="webapp.conf"
 server {
@@ -165,6 +165,62 @@ Create ConfigMap with a vhost configuration and `index.html`:
 kubectl create configmap -n webapp webapp-conf --from-file=webapp.conf
 kubectl create configmap -n webapp webapp-html --from-file=index.html
 ```
+<details>
+<summary>See created ConfigMaps` </summary>
+
+```yaml title= webapp-conf.yaml"
+apiVersion: v1
+data:
+  webapp.conf: |
+    server {
+        listen 80 default_server;
+
+        root /srv/webapp;
+        index index.html;
+
+        server_name _;
+
+        access_log /var/log/nginx/webapp.access_log main;
+        error_log /var/log/nginx/webapp.error_log;
+
+        location / {
+            try_files $uri $uri/ =404;
+        }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: webapp-conf
+  namespace: webapp
+```
+
+```yaml title= webapp-html.yaml"
+apiVersion: v1
+data:
+  webapp.conf: |
+    server {
+        listen 80 default_server;
+
+        root /srv/webapp;
+        index index.html;
+
+        server_name _;
+
+        access_log /var/log/nginx/webapp.access_log main;
+        error_log /var/log/nginx/webapp.error_log;
+
+        location / {
+            try_files $uri $uri/ =404;
+        }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: webapp-conf
+  namespace: webapp1
+```
+
+</details>
 
 Prepare the webapp Deployment manifest:
 
@@ -209,7 +265,7 @@ spec:
         emptyDir: {}
 ```
 
-Create a webapp Deployment which is relying on previous ConfigMap's:
+Create a webapp Deployment relies on the previous ConfigMaps:
 
 ```shell
 kubectl apply -f deploy-webapp.yaml
@@ -228,13 +284,13 @@ To test the webapp open a tunnel connection to it:
 kubectl port-forward -n webapp pod/webapp-<POD_ID> 8080:80
 ```
 
-In a new terminal test the application:
+Test the application in a new terminal:
 
 ```shell
 curl http://127.0.0.1:8080
 ```
 
-To cleanup remove the `webapp` Namespace:
+To clean up remove the `webapp` Namespace:
 
 ```shell
 kubectl delete ns webapp
@@ -248,11 +304,28 @@ Create the `database` Namespace:
 kubectl create namespace database
 ```
 
-Create a Secret object which will store the MariaDB administrator password:
+Create a Secret object that will store the MariaDB administrator's password.:
 
 ```shell
 kubectl create secret -n database generic mariadb --from-literal=password="dbpassword"
 ```
+
+<details>
+<summary>See created Secret` </summary>
+
+```yaml
+apiVersion: v1
+data:
+  password: ZGJwYXNzd29yZA==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mariadb
+  namespace: database
+```
+> Please note that the password is not stored as plain text. The data within Kubernetes Secrets is encoded as base64 strings, which is a simple form of obfuscation but does not provide encryption.
+
+</details>
 
 Deploy the MariaDB instance which will use the administrator password:
 
@@ -293,7 +366,7 @@ spec:
         emptyDir: {}
 ```
 
-Apply a manifest on Kubernetes cluster:
+Apply a manifest on a Kubernetes cluster:
 
 ```shell
 kubectl apply -f deploy-mariadb.yaml
