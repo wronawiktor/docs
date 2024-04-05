@@ -6,10 +6,17 @@ sidebar_position: 13
 
 ## Install bare-metal Load Balancer service
 
-Note: [Bare-metal ingress controller consideration](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/)
+:::note
 
-Note: [Metallb concept](https://metallb.universe.tf/concepts/)
+[Bare-metal ingress controller consideration](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/)
 
+:::
+
+:::note
+
+[Metallb concept](https://metallb.universe.tf/concepts/)
+
+:::
 
 Add Helm Chart repository:
 
@@ -18,13 +25,13 @@ helm repo add metallb https://metallb.github.io/metallb
 helm repo update
 ```
 
-Install `metallb` as Load Balancer service:
+Install `metallb` as a Load Balancer service:
 
 ```shell
 helm install --create-namespace --namespace metallb metallb metallb/metallb
 ```
 
-Configure Load Balancer ippol:
+Configure Load Balancer iptool:
 
 ```yaml title="metallb-iptool.yaml"
 ---
@@ -48,7 +55,7 @@ spec:
   - default
 ```
 
-Apply Load Balancer configuration:
+Apply the Load Balancer configuration:
 
 ```shell
 kubectl apply -f metallb-iptool.yaml
@@ -64,9 +71,17 @@ helm list -n metallb
 
 ## Intergrate metallb with NGINX Ingress Controller
 
-Note: [Bare-metal consideration](https://kubernetes.github.io/ingress-nginx/deploy/baremetal)
+:::note
 
-Note: To do this task you have to install first NGINX Ingress Controller from previous chapter!
+[Bare-metal consideration](https://kubernetes.github.io/ingress-nginx/deploy/baremetal)
+
+:::
+
+:::warning
+
+To complete this task, you need to first install the NGINX Ingress Controller from the previous chapter!
+
+:::
 
 Tell NGINX Ingress Controller to stop using host network:
 
@@ -80,7 +95,7 @@ Check NGINX Ingress Controller:
 helm list -n ingress-nginx
 ```
 
-Check External IP of NGINX Ingress Controller:
+Check the External IP of the NGINX Ingress Controller:
 
 ```shell
 kubectl get svc -n ingress-nginx
@@ -88,17 +103,50 @@ kubectl get svc -n ingress-nginx
 
 ## Deploy test web application
 
-Create new namespace for web application
+Create a new namespace for the web application:
 
 ```shell
 kubectl create namespace front-web
 ```
 
-Create new application in specific namespace:
+Create a new application in a specific namespace:
 
 ```shell
 kubectl create deployment -n front-web web-app --image=nginx:1.23 --replicas=3
 ```
+<details>
+<summary>See created Deployment </summary>
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: web-app
+  name: web-app
+  namespace: front-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - image: nginx:1.23
+        name: nginx
+        resources: {}
+status: {}
+
+```
+
+</details>
 
 Check deployment status:
 
@@ -111,6 +159,31 @@ Expose fronted application with service in mode `LoadBalancer`:
 ```shell
 kubectl expose deployment -n front-web web-app --port=80 --type=LoadBalancer
 ```
+<details>
+<summary>See created Service </summary>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: web-app
+  name: web-app
+  namespace: front-web
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: web-app
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+```
+
+</details>
 
 Check Service status:
 
@@ -120,7 +193,7 @@ kubectl get svc -n front-web web-app
 
 Output:
 
-```
+```console
 NAME      TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
 web-app   LoadBalancer   10.106.220.243   10.10.10.241  80:32586/TCP   7s
 ```
@@ -131,7 +204,7 @@ Try to connect from remote host:
 curl http://10.10.10.241
 ```
 
-Delete LoadBalancer service 
+Delete LoadBalancer service:
 
 ```shell
 kubectl delete service -n front-web web-app
@@ -142,6 +215,32 @@ Expose once again `web-app` with `ClusterIP`:
 ```shell
 kubectl expose deployment -n front-web web-app --type=ClusterIP --port=80
 ```
+
+<details>
+<summary>See created Service </summary>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: web-app
+  name: web-app
+  namespace: front-web
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: web-app
+  type: ClusterIP
+status:
+  loadBalancer: {}
+```
+
+</details>
 
 Check service object:
 
@@ -174,7 +273,7 @@ spec:
                   number: 80
 ```
 
-Apply ingress configuration:
+Apply Ingress configuration:
 
 ```shell
 kubectl apply -f front-web.yaml
@@ -188,7 +287,7 @@ kubectl get svc -n ingress-nginx ingress-nginx-controller
 
 Output:
 
-```
+```console
 NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
 ingress-nginx-controller   LoadBalancer   10.109.139.127   10.10.10.240  80:31801/TCP,443:31942/TCP   3h16m
 ```
