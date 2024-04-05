@@ -4,17 +4,17 @@ sidebar_position: 11
 
 # Security concept
 
-Learn basic about Kubernetes security
+Learn the basics of Kubernetes security
 
 ## Understand client certificates
 
-View `kubernetes-admin` user **KUBECONFIG**:
+View **KUBECONFIG** for `Kubernetes-admin` user:
 
 ```shell
 kubectl config view
 ```
 
-Get `client-certificate-data` from `./kube/config` file and decode it with `base64`
+Get `client-certificate-data` from `./kube/config` file and decode it with `base64`:
 
 ```shell
 awk '/client-certificate-data/ {print $2}' $HOME/.kube/config | base64 -d
@@ -28,7 +28,7 @@ awk '/client-certificate-data/ {print $2}' $HOME/.kube/config | base64 -d | open
 
 Output:
 
-```shell
+```console
 Certificate:
     Data:
         Version: 3 (0x2)
@@ -45,14 +45,14 @@ Certificate:
 Organization / O field in Subject `O = system:masters` is Kubernetes Group name.
 Common Name / CN field in Subject `CN = kubernetes-admin` is Kubernetes User name.
 
-Now we can look on Kubernetes configuration ClusterRoleBinding or just RoleBinding with our User or Group Name:
+Now we can look on Kubernetes configuration of the ClusterRoleBinding or just RoleBinding with our User or Group Name:
 
 ```shell
 kubectl get clusterrolebindings.rbac.authorization.k8s.io -o yaml | grep kubernetes-admin
 kubectl get clusterrolebindings.rbac.authorization.k8s.io -o yaml | grep system:masters
 ```
 
-At least for `system:masters` it has to be some finding. Open ClusterRoleBindings details with `less`:
+At least for `system:masters`, there must be some findings. Open the details of ClusterRoleBindings with `less`:
 
 ```shell
 kubectl get clusterrolebindings.rbac.authorization.k8s.io -o yaml | less
@@ -83,7 +83,7 @@ subjects:
   name: system:masters
 ```
 
-Now we can look on ClusterRole which was assigned to Group `system:masters`:
+Now we can look at the ClusterRole which was assigned to the group `system: masters`:
 
 ```shell
 kubectl get clusterrole cluster-admin -o yaml
@@ -117,13 +117,13 @@ rules:
 ## Create ServiceAccount and RBAC role
 
 
-Create new Namespace:
+Create a new Namespace:
 
 ```shell
 kubectl create ns webapp
 ```
 
-Create new ServiceAccount inside this Namespace:
+Create a new ServiceAccount in this Namespace:
 
 ```shell
 kubectl create serviceaccount -n webapp webapp
@@ -137,7 +137,7 @@ kubectl auth can-i -n webapp --as=system:serviceaccount:webapp:webapp get pods
 
 Output:
 
-```shell
+```console
 no
 ```
 
@@ -146,11 +146,11 @@ kubectl auth can-i -n webapp --as=system:serviceaccount:webapp:webapp delete pod
 ```
 
 Output:
-```shell
+```console
 no
 ```
 
-Let's create new Role with basic permission to Pods:
+Let's create a new Role with basic permissions for Pods:
 
 ```yaml title="role-webapp.yaml"
 apiVersion: rbac.authorization.k8s.io/v1
@@ -164,7 +164,7 @@ rules:
   verbs: ["list", "get", "watch"]
 ```
 
-Apply manifest with configuration:
+Apply the manifest with configuration:
 
 ```shell
 kubectl apply -f role-webapp.yaml
@@ -173,7 +173,7 @@ kubectl apply -f role-webapp.yaml
 Assign `webapp` Role to `webapp` ServiceAccount:
 
 ```shell
-kubectl create rolebinding -n webapp webapp --role=webapp --serviceaccount=webapp:webapp --dry-run -o yaml > rolebinding-webapp.yaml
+kubectl create rolebinding -n webapp webapp --role=webapp --serviceaccount=webapp:webapp --dry-run=client -o yaml > rolebinding-webapp.yaml
 ```
 
 This RoleBinding should looks like:
@@ -209,7 +209,7 @@ kubectl auth can-i -n webapp --as=system:serviceaccount:webapp:webapp get pods
 
 Output:
 
-```shell
+```console
 yes
 ```
 
@@ -219,7 +219,7 @@ kubectl auth can-i -n webapp --as=system:serviceaccount:webapp:webapp watch pods
 
 Output:
 
-```shell
+```console
 yes
 ```
 
@@ -229,7 +229,7 @@ kubectl auth can-i -n webapp --as=system:serviceaccount:webapp:webapp create pod
 
 Output:
 
-```shell
+```console
 no
 ```
 
@@ -257,25 +257,25 @@ spec:
         name: nginx
 ```
 
-Apply `deploy-webapp.yaml` manifest:
+Apply the `deploy-webapp.yaml` manifest:
 
 ```shell
 kubectl apply -f deploy-webapp.yaml
 ```
 
-Check Deployment, ReplicaSet and Pods statuses:
+Check the statuses of Deployment, ReplicaSet, and Pods:
 
 ```shell
-kubectl get deploy,rs,po -n webapp
+kubectl get deploy,rs,pods -n webapp
 ```
 
-Open terminal session to any `webaapp` Pod instance:
+Open a terminal session to any `webaapp` Pod instance:
 
 ```shell
 kubectl exec -n webapp -ti webapp-<Tab> -- sh
 ```
 
-Inside opened terminall execute following commands:
+In the opened terminal, execute the following commands:
 
 ```shell
 # List /var/run/secrets/kubernetes.io/serviceaccount directory
@@ -292,4 +292,10 @@ TOKEN=$(cat ${SERVICEACCOUNT}/token)
 CACERT=${SERVICEACCOUNT}/ca.crt
 
 curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api/v1/namespaces/webapp/pods
+```
+
+To clean up, remove the `webapp` namespace:
+
+```shell
+kubectl delete ns webapp
 ```
