@@ -13,7 +13,7 @@ Create test Namespace:
 kubectl create namespace test
 ```
 
-Create an nginx Deployment and expose it via a service:
+Create an Nginx Deployment and expose it through a Service:
 
 ```shell
 kubectl create deployment -n test nginx --image=nginx:1.23 --replicas=3
@@ -21,11 +21,44 @@ kubectl create deployment -n test nginx --image=nginx:1.23 --replicas=3
 
 Output:
 
-```
+```console
 deployment.apps/nginx created
 ```
+<details>
+<summary>See created Deployment </summary>
 
-Expose the Deployment through a Service called nginx:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx
+  name: nginx
+  namespace: test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:1.23
+        name: nginx
+        resources: {}
+status: {}
+
+```
+
+</details>
+
+Expose the Deployment through a Service named Nginx:
 
 ```shell
 kubectl expose deployment -n test nginx --port=8080 --target-port=80
@@ -33,9 +66,35 @@ kubectl expose deployment -n test nginx --port=8080 --target-port=80
 
 Output:
 
-```
+```console
 service/nginx exposed
 ```
+
+<details>
+<summary>See created Service </summary>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx
+  name: nginx
+  namespace: test
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx
+status:
+  loadBalancer: {}
+
+```
+
+</details>
 
 The above commands create a Deployment with an nginx Pod and expose the Deployment through a Service named nginx. The nginx Pod and Deployment are found in the default namespace.
 
@@ -45,7 +104,7 @@ kubectl get svc,pod -n test
 
 Output:
 
-```
+```console
 NAME                        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
 service/kubernetes          10.100.0.1    <none>        443/TCP    46m
 service/nginx               10.100.0.16   <none>        8080/TCP     33s
@@ -54,7 +113,7 @@ NAME                        READY         STATUS        RESTARTS   AGE
 pod/nginx-701339712-e0qfq   1/1           Running       0          35s
 ```
 
-Test the service by accessing it from another Pod
+Test the Service by accessing it from another Pod
 You should be able to access the new nginx service from other Pods. To access the nginx Service from another Pod in the default namespace, start a busybox container:
 
 ```shell
@@ -69,12 +128,12 @@ wget --spider --timeout=1 http://nginx:8080
 
 Output:
 
-```
+```console
 Connecting to nginx:8080 (10.101.252.93:8080)
 ```
 
-Limit access to the nginx service
-To limit the access to the nginx service so that only Pods with the label `access: enabled` can query it, create a NetworkPolicy object as follows:
+### Limit access to the nginx service
+To limit the access to the nginx Service so that only Pods with the label `access: enabled` can query it, create a NetworkPolicy object as follows:
 
 ```yaml title="access-nginx.yaml"
 apiVersion: networking.k8s.io/v1
@@ -94,8 +153,15 @@ spec:
 
 The name of a NetworkPolicy object must be a valid DNS subdomain name.
 
-Note: NetworkPolicy includes a podSelector which selects the grouping of Pods to which the policy applies. You can see this policy selects Pods with the label app=nginx. The label was automatically added to the Pod in the nginx Deployment. An empty podSelector selects all pods in the namespace.
-Assign the policy to the service
+:::note
+
+NetworkPolicy includes a podSelector which selects the grouping of Pods to which the policy applies. You can see this policy selects Pods with the label app=nginx. The label was automatically added to the Pod in the nginx Deployment. An empty podSelector selects all pods in the namespace.
+
+
+:::
+
+### Assign the policy to the service
+
 Use kubectl to create a NetworkPolicy from the above access-nginx.yaml file:
 
 ```shell
@@ -104,11 +170,12 @@ kubectl apply -f access-nginx.yaml
 
 Output:
 
-```
+```console
 networkpolicy.networking.k8s.io/access-nginx created
 ```
 
-Test access to the service when access label is not defined
+### Test access to the service when access label is not defined.
+
 When you attempt to access the nginx Service from a Pod without the correct labels, the request times out:
 
 ```shell
@@ -123,12 +190,13 @@ wget --spider --timeout=1 http://nginx:8080
 
 Output:
 
-```
+```console
 Connecting to nginx (10.100.0.16:80)
 wget: download timed out
 ```
 
-Define access label and test again
+### Define access label and test again.
+
 You can create a Pod with the correct labels to see that the request is allowed:
 
 ```shell
@@ -143,9 +211,15 @@ wget --spider --timeout=1 http://nginx:8080
 
 Output:
 
-```
+```console
 Connecting to nginx (10.100.0.16:8080)
 remote file exists
+```
+
+Clean up:
+
+```shell
+kubectl delete ns test
 ```
 
 ## Advanced Network Policy for guestbook with Redis and PHP
@@ -181,7 +255,7 @@ Apply deny all NetworkPolicy:
 kubectl apply -f guestbook-deny-all.yaml
 ```
 
-Allow DNS traffic for all pods in `guestbook` namespace:
+Allow DNS traffic for all pods in the `guestbook` namespace:
 
 ``` yaml title="guestbook-allow-dns.yaml"
 apiVersion: networking.k8s.io/v1
@@ -243,7 +317,7 @@ spec:
         - containerPort: 6379
 ```
 
-Apply readis-leader manifest:
+Apply the readis-leader manifest:
 
 ```shell
 kubectl apply -f deploy-redis-leader.yaml
@@ -257,7 +331,7 @@ kubectl get pods -n guestbook
 
 Output:
 
-```
+```console
 NAME                           READY     STATUS    RESTARTS   AGE
 redis-leader-343230949-qfvrq   1/1       Running   0          43s
 ```
@@ -270,7 +344,7 @@ kubectl logs -n guestbook deployment/redis-leader
 
 Output:
 
-```
+```console
 1:C 15 Jul 2021 14:23:25.535 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
 1:C 15 Jul 2021 14:23:25.535 # Redis version=6.0.5, bits=64, commit=00000000, modified=0, pid=1, just started
 1:C 15 Jul 2021 14:23:25.535 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
@@ -287,6 +361,34 @@ Expose Redis leader:
 kubectl expose deployment -n guestbook redis-leader --port=6379
 ```
 
+<details>
+<summary>See created Service </summary>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis
+    role: leader
+    tier: backend
+  name: redis-leader
+  namespace: guestbook
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis
+status:
+  loadBalancer: {}
+
+```
+
+</details>
+
 Verify service:
 
 ```shell
@@ -295,7 +397,7 @@ kubectl get svc -n guestbook redis-leader
 
 Output:
 
-```
+```console
 NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 redis-leader   ClusterIP   10.110.99.222   <none>        6379/TCP   20s
 ```
@@ -344,12 +446,12 @@ kubectl apply -f deploy-redis-follower.yaml
 Check logs for Redis follower pods:
 
 ```shell
-kubectl logs -n guestbook redis-follower-<Tab>
+kubectl logs -n guestbook redis-follower-<Tab>-<Tab>
 ```
 
 Output:
 
-```
+```console
 10:S 27 Jul 2021 10:15:23.836 * Ready to accept connections
 10:S 27 Jul 2021 10:15:23.836 * Connecting to MASTER redis-leader:6379
 10:S 27 Jul 2021 10:15:23.843 * MASTER <-> REPLICA sync started
@@ -392,15 +494,21 @@ spec:
       port: 6379
 ```
 
+Apply created Network Policy:
+
+```shell
+kubectl apply -f guestbook-allow-redis-sync.yaml
+```
+
 Check once again logs from Redis followers:
 
 ```shell
-kubectl logs -n guestbook redis-follower-<Tab>
+kubectl logs -n guestbook redis-follower-<Tab>-<Tab>
 ```
 
 Output:
 
-```
+```console
 10:S 15 Jul 2021 14:53:07.966 * Connecting to MASTER redis-leader:6379
 10:S 15 Jul 2021 14:53:07.970 * MASTER <-> REPLICA sync started
 ```
@@ -410,6 +518,32 @@ Expose Redis follower service:
 ```shell
 kubectl expose deployment -n guestbook redis-follower --port=6379
 ```
+<details>
+<summary>See created Service </summary>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis
+    role: follower
+    tier: backend
+  name: redis-follower
+  namespace: guestbook
+spec:
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis
+status:
+  loadBalancer: {}
+```
+
+</details>
 
 Check list of services:
 
@@ -419,7 +553,7 @@ kubectl get svc -n guestbook
 
 Output:
 
-```
+```console
 NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 redis-follower   ClusterIP   10.98.8.13      <none>        6379/TCP   53s
 redis-leader     ClusterIP   10.110.99.222   <none>        6379/TCP   49m
@@ -447,7 +581,7 @@ spec:
     spec:
       containers:
       - name: php-redis
-        image: gcr.io/google_samples/gb-frontend:v5
+        image: gcr.io/google-samples/gb-frontend-amd64:v5
         env:
         - name: GET_HOSTS_FROM
           value: "dns"
@@ -459,13 +593,13 @@ spec:
         - containerPort: 80
 ```
 
-Apply YAML deployment:
+Apply YAML Deployment:
 
 ```shell
 kubectl apply -f deploy-frontend.yaml
 ```
 
-Check pods status for frontend deployment:
+Check pods status for frontend Deployment:
 
 ```shell
 kubectl get pods -l app=guestbook -l tier=frontend -n guestbook
@@ -473,7 +607,7 @@ kubectl get pods -l app=guestbook -l tier=frontend -n guestbook
 
 Output:
 
-```
+```console
 NAME                        READY   STATUS    RESTARTS   AGE
 frontend-85595f5bf9-2lmnb   1/1     Running   0          7m20s
 frontend-85595f5bf9-bv9sx   1/1     Running   0          7m19s
@@ -486,7 +620,33 @@ Expose frontend application with LoadBalancer:
 kubectl expose deployment -n guestbook frontend --port=80 --type=LoadBalancer
 ```
 
-Check service:
+<details>
+<summary>See created Service </summary>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: frontend
+  namespace: guestbook
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: guestbook
+    tier: frontend
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
+```
+
+</details>
+
+Check Service:
 
 ```shell
 kubectl get svc -n guestbook
@@ -494,7 +654,7 @@ kubectl get svc -n guestbook
 
 Output:
 
-```
+```console
 NAME             TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
 frontend         LoadBalancer   10.106.92.142   10.168.0.50   80:30547/TCP   7m22s
 redis-follower   ClusterIP      10.98.8.13      <none>        6379/TCP       15h
@@ -510,11 +670,11 @@ curl --connect-timeout 5 http://$EXTERNALIP
 
 Output:
 
-```
+```console
 curl: (28) Connection timed out after 5001 milliseconds
 ```
 
-Prepare Network Policy to allow connection to frontend:
+Prepare a network policy to allow connection to the frontend:
 
 ```yaml title="allow-frontend.yaml"
 kind: NetworkPolicy
@@ -547,7 +707,7 @@ curl --connect-timeout 5 http://$EXTERNALIP
 
 Output:
 
-```
+```console
 <html ng-app="redis">
   <head>
     <title>Guestbook</title>
@@ -575,7 +735,7 @@ Output:
 </html>
 ```
 
-Last step is to allow connection from frontend application to redis instances:
+The last step is to allow the connection from the frontend application to the Redis instances:
 
 ```yaml title="allow-frontend-redis.yaml"
 apiVersion: networking.k8s.io/v1
@@ -633,4 +793,10 @@ Check connection using Web browser:
 
 ```
 http://<EXTERNALIP>
+```
+
+Clean up:
+
+```shell
+kubectl delete ns guestbook
 ```
