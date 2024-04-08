@@ -4,8 +4,7 @@ sidebar_position: 20
 
 # Learn Helm
 
-Learn how to use Helm to install any application on Kubernetes
-
+Learn how to use Helm to install any application on Kubernetes.
 
 ## Install Helm
 
@@ -19,7 +18,7 @@ Get your desired [latest](https://github.com/helm/helm/releases) version of Helm
 wget https://get.helm.sh/helm-v3.10.3-linux-amd64.tar.gz
 ```
 
-Extract tarball archive to your local filesystem:
+Extract the tarball archive to your local filesystem:
 
 ```shell
 tar -xvzf helm-v3.10.3-linux-amd64.tar.gz
@@ -39,7 +38,7 @@ helm version
 
 Output:
 
-```shell
+```console
 version.BuildInfo{Version:"v3.10.3", GitCommit:"835b7334cfe2e5e27870ab3ed4135f136eecc704", GitTreeState:"clean", GoVersion:"go1.18.9"}
 ```
 
@@ -54,13 +53,13 @@ echo "source <(helm completion bash)" >> ~/.bashrc
 
 ## Generate Helm chart template
 
-Helm can be used also for generating charts templates.
+Helm can also be used for generating chart templates:
 
 ```shell
 helm create example
 ```
 
-Check Helm chart package directory structure:
+Check the structure of the Helm chart package directory:
 
 ```shell
 sudo apt-get install tree
@@ -88,7 +87,11 @@ example/
 3 directories, 10 files
 ```
 
+:::note
+
 To get more info about Helm Chart Templates you go to [official documentation](https://helm.sh/docs/chart_template_guide/getting_started/)
+
+:::
 
 Verify Helm lint for `example` package:
 
@@ -102,20 +105,74 @@ Test example Helm Chart installation:
 helm install --create-namespace --namespace test example ./example/ --dry-run --debug
 ```
 
-Then we can try to install it on Kubernetes cluster:
+<details>
+<summary>See created Deployment </summary>
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example
+  labels:
+    helm.sh/chart: example-0.1.0
+    app.kubernetes.io/name: example
+    app.kubernetes.io/instance: example
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: example
+      app.kubernetes.io/instance: example
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: example
+        app.kubernetes.io/instance: example
+    spec:
+      serviceAccountName: example
+      securityContext:
+        {}
+      containers:
+        - name: example
+          securityContext:
+            {}
+          image: "nginx:1.16.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+
+```
+
+</details>
+
+Then we can try to install it on the Kubernetes cluster:
 
 ```shell
 helm install --create-namespace --namespace test example ./example/
 ```
 
-Verify status example application on Kubernetes:
+Verify the status of the example application on Kubernetes:
 
 ```shell
 kubectl get deploy,rs,pods -n test
 kubectl get svc -n test
 ```
 
-Now we can check `example` application release using Helm:
+Now we can check the `example` application release using Helm:
 
 ```shell
 helm list -n test
@@ -123,13 +180,13 @@ helm status -n test example
 helm history -n test example
 ```
 
-Because NGiNX image used in this example is outdated let's upgrade example app with new image:
+Since the NGiNX image used in this example is outdated, let's upgrade the example app with a new image:
 
 ```shell
 helm upgrade -n test example ./example/ --set image.tag="1.23.2"
 ```
 
-Let's verify once again application release:
+Let's verify the application release once again:
 
 ```shell
 helm list -n test
@@ -152,13 +209,13 @@ Generate new Helm chart:
 helm create myapp
 ```
 
-Remove not needed files:
+Remove unnecessary files:
 
 ```shell
 rm myapp/charts myapp/templates/* myapp/values.yaml -r
 ```
 
-Go into `myapp` directory and edit `Chart.yaml`
+Go into `myapp` directory and edit `Chart.yaml`:
 
 ```yaml title="Chart.yaml"
 apiVersion: v2
@@ -172,11 +229,11 @@ version: 0.1.0
 appVersion: "v1.0"
 ```
 
-Go into `templates` subdirectory and generate `delployment.yaml` manifest:
+Go into the `templates` subdirectory and generate the `deployment.yaml` manifest:
 
 ```shell
 cd templates
-kubectl create deployment myapp --image=ghcr.io/mjura/myapp:v1.0 --replicas=3 --dry-run -o yaml > deployment.yaml
+kubectl create deployment myapp --image=ghcr.io/mjura/myapp:v1.0 --replicas=3 --dry-run=client -o yaml > deployment.yaml
 ```
 
 Edit `deployment.yaml` manifest:
@@ -203,7 +260,7 @@ spec:
         name: myapp
 ```
 
-Go to main `myapp` directory
+Go to main `myapp` directory:
 
 ```shell
 cd ..
@@ -217,7 +274,7 @@ replicaCount: 3
 image: ghcr.io/mjura/myapp
 ```
 
-Check `myapp` Helm chart directory tree:
+Check the `myapp` Helm chart directory tree:
 
 ```shell
 cd ..
@@ -234,7 +291,7 @@ myapp/
 └── values.yaml
 ```
 
-Validate `myapp` Helm chart:
+Validate the  `myapp` Helm chart:
 
 ```shell
 helm lint ./myapp
@@ -242,26 +299,53 @@ helm lint ./myapp
 
 Output:
 
-```shell
+```console
 ==> Linting ./myapp/
 [INFO] Chart.yaml: icon is recommended
 
 1 chart(s) linted, 0 chart(s) failed
 ```
 
-Try to generate and dry run `myapp` installation:
+Try to generate and perform a dry run of the `myapp` installation:
 
 ```shell
 helm install --create-namespace --namespace myapp release-name ./myapp --debug --dry-run
 ```
 
-To install `myapp` just execute:
+<details>
+<summary>See created Deployment </summary>
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myapp
+  name: release-name
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - image: "ghcr.io/mjura/myapp:v1.0"
+        name: myapp
+```
+
+</details>
+
+To install `myapp`, just execute:
 
 ```shell
 helm install --create-namespace --namespace myapp release-name ./myapp
 ```
 
-Check application installation status:
+Check the status of the application installation:
 
 ```shell
 helm list -n myapp
@@ -269,10 +353,13 @@ helm status -n myapp release-name
 helm history -n myapp release-name
 ```
 
-Check list deployment and pod list:
+Check the list of Deployments and Pods:
 
 ```shell
 kubectl get deploy,rs,pods -n myapp
 kubectl logs -n myapp -l app=myapp
 ```
-
+Clean up:
+```shell
+kubectl delete ns test myapp
+```
