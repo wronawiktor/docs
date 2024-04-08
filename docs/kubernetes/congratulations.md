@@ -4,7 +4,7 @@ sidebar_position: 99
 
 # Congratulations!
 
-You have just learned the **basics of Kubernetes** and made .
+You have just learned the **basics of Kubernetes**!
 
 Kubernetes has **much more to offer**!
 

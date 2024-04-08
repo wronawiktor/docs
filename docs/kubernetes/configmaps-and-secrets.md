@@ -166,8 +166,9 @@ kubectl create configmap -n webapp webapp-conf --from-file=webapp.conf
 kubectl create configmap -n webapp webapp-html --from-file=index.html
 ```
 <details>
-<summary>See created ConfigMaps` </summary>
+<summary>See created ConfigMaps </summary>
 
+webapp-conf.yaml:
 ```yaml title= webapp-conf.yaml"
 apiVersion: v1
 data:
@@ -194,6 +195,7 @@ metadata:
   namespace: webapp
 ```
 
+webapp-html.yaml
 ```yaml title= webapp-html.yaml"
 apiVersion: v1
 data:
@@ -311,7 +313,7 @@ kubectl create secret -n database generic mariadb --from-literal=password="dbpas
 ```
 
 <details>
-<summary>See created Secret` </summary>
+<summary>See created Secret </summary>
 
 ```yaml
 apiVersion: v1

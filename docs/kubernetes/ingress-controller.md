@@ -8,7 +8,7 @@ sidebar_position: 12
 ## Deploy the NGINX Ingress Controller
 
 
-:::tip[Check documentation]
+:::tip Check documentation
 
 [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy)
 
@@ -435,7 +435,7 @@ You'll see a warning about untrusted certificates from the staging issuer, but t
 
 Create this definition locally and update the email address to your own. This email is required by Let's Encrypt and used to notify you of certificate expiration and updates.
 
-:::tip[To learn more]
+:::tip To learn more
 
 To learn more about it, go to official [Certificate Manager documentation](https://cert-manager.io/docs/tutorials/acme/nginx-ingress/#step-6---configure-a-lets-encrypt-issuer)
 

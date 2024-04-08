@@ -127,7 +127,7 @@ color ,red "	+ +| +	+"
 ```
 
 Then, ensure that the config is included in the `$HOME/.nanorc` file by adding the following:
-```txt title=$HOME/.nanorc"
+```txt title=$HOME/.nanorc
 include "~/.nano/yaml.nanorc"
 ```
 
